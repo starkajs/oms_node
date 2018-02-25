@@ -15,14 +15,16 @@ const keys = require('./config/keys');
 
 // ROUTES
 const routes = require('./routes/index');
+const authRoutes = require('./routes/authRoutes');
 const testRoutes = require('./routes/testRoutes');
+
 
 // create the Express app
 const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 // serve up static files from public folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -77,9 +79,7 @@ app.use((req, res, next) => {
 // Route handling
 app.use('/', routes);
 app.use('/test', testRoutes);
-//require('./routes/authRoutes')(app);
-//require('./routes/testRoutes')(app);
-//require('./routes/adminRoutes')(app);
+app.use('/auth', authRoutes);
 
 // If above routes don't work, 404 and forward to error handler
 app.use(errorHandlers.notFound);

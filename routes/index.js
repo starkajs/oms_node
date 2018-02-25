@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const baseController = require('../controllers/baseController');
 
 // Do work here
-router.get('/', (req, res) => {
-  res.send('Hey! It works!');
-});
+router.get('/', baseController.myMiddleware, baseController.homePage);
 
 module.exports = router;

@@ -1,0 +1,50 @@
+html
+  head
+    title= `${title} | ${h.siteName}`
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+  body
+    block navbar
+      nav.navbar.navbar-default.fixed-top
+        div.container-fluid
+          div.navbar-header
+            a.navbar-brand(href="#") #{h.siteName}
+          div.collapse.navbar-collapse
+            if user
+              ul.nav.navbar-nav
+                li.dropdown
+                  a.dropdown-toggle(href="#", data-toggle="dropdown" role="button") Admin
+                    span.caret
+                  ul.dropdown-menu
+                    li
+                      a(href="#") Roles
+                      a(href="#") Users
+                      a(href="#") Freeagent
+            ul.nav.navbar-nav.navbar-right
+              if user
+                li
+                  a(href="/auth/logout") Logout #{user.email}
+              else
+                li
+                  a(href="/auth/google") Login (Google)
+                li
+                  a(href="/auth/azure") Login (Azure)
+                li
+                  a(href="#") Login
+
+    block content
+      .container
+        .row
+          .col-sm-12
+            h1 Welcome to the Optimum Management System
+    block footer
+        br
+        .container
+            div &copy; 2018 Optimum PPS.
+
+    block scripts
+
+
+
+
