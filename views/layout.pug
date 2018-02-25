@@ -9,7 +9,7 @@ html
       nav.navbar.navbar-default.fixed-top
         div.container-fluid
           div.navbar-header
-            a.navbar-brand(href="#") #{h.siteName}
+            a.navbar-brand(href="/") #{h.siteName}
           div.collapse.navbar-collapse
             if user
               ul.nav.navbar-nav
@@ -18,7 +18,7 @@ html
                     span.caret
                   ul.dropdown-menu
                     li
-                      a(href="#") Roles
+                      a(href="/admin/roles") Roles
                       a(href="#") Users
                       a(href="#") Freeagent
             ul.nav.navbar-nav.navbar-right
@@ -41,6 +41,7 @@ html
     block footer
         br
         .container
+            div#update_message.text-center
             div &copy; 2018 Optimum PPS.
 
     block scripts

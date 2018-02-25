@@ -15,9 +15,10 @@ const keys = require('./config/keys');
 
 // ROUTES
 const routes = require('./routes/index');
-const authRoutes = require('./routes/authRoutes');
-const testRoutes = require('./routes/testRoutes');
-
+const authRoutes = require('./routes/auth/authRoutes');
+const testRoutes = require('./routes/test/testRoutes');
+const adminRoutes = require('./routes/admin/adminRoutes');
+const adminApiRoutes = require('./routes/admin/api');
 
 // create the Express app
 const app = express();
@@ -80,6 +81,9 @@ app.use((req, res, next) => {
 app.use('/', routes);
 app.use('/test', testRoutes);
 app.use('/auth', authRoutes);
+app.use('/admin', adminRoutes);
+app.use('/api/admin', adminApiRoutes);
+
 
 // If above routes don't work, 404 and forward to error handler
 app.use(errorHandlers.notFound);

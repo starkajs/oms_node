@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const sql = require('../services/tedious');
+const sql = require('../../services/tedious');
+const User = require('../../model/User');
 
 router.get('/tedious', (req, res) => {
     const s = new sql.sqlServer();
@@ -28,6 +29,12 @@ router.get('/render', (req, res) => {
         name: 'Andrew',
         dog: 'Rory'
     });
+})
+
+router.get('/user/:email', async (req, res) => {
+    const new_user = await new User();
+    await new_user.initEmail(req.params.email);
+    res.json(new_user);
 })
 
 module.exports = router;

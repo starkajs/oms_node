@@ -3,8 +3,8 @@ module.exports = {
 	GOOGLE_CLIENT_SECRET: 'Nqvva_P6UETX05wVGvDjXdpP',
 	//GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
 	//GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-    AZURE_CLIENT_ID: '59780c05-b089-40c9-acd2-749e3c52b124',
-    AZURE_CLIENT_SECRET: 'reaRLY738=dpjdXYQI86[;*',
+    AZURE_CLIENT_ID: '5381c92d-a996-4164-b866-dfde24e9a5e3',
+    AZURE_CLIENT_SECRET: 'yoWnq44wGZkl4pcmHvo6V7GDi+nn/1p2hFRfUzYu6ZU=',
     AZURE_TENANT: 'ebfb652e-f609-41e9-8382-b6dc6cf94590',
     AZURE_RESOURCE: 'https://graph.windows.net',
 	sqlServer: {

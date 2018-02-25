@@ -32,10 +32,8 @@ passport.use(new GoogleStrategy({
     let sqlQuery = `SELECT * FROM solution_user WHERE email = '${email}'`
     s.tpQuery(sqlQuery).then((data) => {
         if (!data[0]) {
-            console.log("the email doesn't exist in the database");
             done({error: "User doesn't exist"}, null);
         } else {
-            console.log("the email exists in the database");
             let thisUser = data[0];
             sqlQuery = `UPDATE solution_user SET last_login = GETDATE() WHERE id = '${thisUser['id']}'`
             s.tpQuery(sqlQuery);
@@ -56,16 +54,13 @@ passport.use(new AzureStrategy({
         proxy: true
     }, (accessToken, refreshToken, params, profile, done) => {
         const user = jwt.decode(params.id_token, "", true);
-        console.log('user:', user);
         email = user.unique_name;
         const s = new sql.sqlServer();
         let sqlQuery = `SELECT * FROM solution_user WHERE email = '${email}'`
         s.tpQuery(sqlQuery).then((data) => {
             if (!data[0]) {
-                console.log("the email doesn't exist in the database");
                 done({error: "User doesn't exist"}, null);
             } else {
-                console.log("the email exists in the database");
                 let thisUser = data[0];
                 sqlQuery = `UPDATE solution_user SET last_login = GETDATE() WHERE id = '${thisUser['id']}'`
                 s.tpQuery(sqlQuery);
