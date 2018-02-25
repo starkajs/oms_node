@@ -11,7 +11,8 @@
     "prod": "node ./start.js",
     "watch": "nodemon ./start.js --ignore public/",
     "dev": "nodemon ./start.js",
-    "start": "concurrently \"npm run watch\" \"npm run assets\" --names \"💻,📦\" --prefix name",
+    "devFull": "concurrently \"npm run watch\" \"npm run assets\" --names \"💻,📦\" --prefix name",
+    "start": "node start.js",
     "assets": "webpack -w --display-max-modules 0"
   },
   "author": "Andrew Stark (andrew.stark@optimumpps.co.uk)",
