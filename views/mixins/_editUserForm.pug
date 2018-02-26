@@ -1,0 +1,37 @@
+mixin editUserForm()
+    div.panel.panel-default
+        div.panel-body
+            form.form-horizontal(action="/admin/edit_user/" + editUser.id, method="post")
+                h2 Edit User - #{editUser.full_name}
+                br
+                div.form-group
+                    label.control-label.col-sm-3(for="user_id") ID
+                    div.col-sm-9
+                        input(type="text", placeholder="ID", name="user_id", required="true", value=editUser.id, disabled="true").form-control
+                div.form-group
+                    label.control-label.col-sm-3(for="full_name") Full Name
+                    div.col-sm-9
+                        input(type="text", autofocus=true, placeholder="Full Name", name="full_name", required="true" value=editUser.full_name).form-control
+                div.form-group
+                    label.control-label.col-sm-3(for="email") Email
+                    div.col-sm-9
+                        input(type="email", placeholder="Email", name="email", required="true" value=editUser.email).form-control
+                div.form-group
+                    label.control-label.col-sm-3(for="role_id") Role
+                    div.col-sm-9
+                        select(name="role_id", data-width="100%").selectpicker
+                            each role in roles
+                                option(value=role.id, selected= editUser.role_id == role.id) #{role.role_name}
+                div.form-group
+                    label.control-label.col-sm-3(for="is_active") Active
+                    div.col-sm-9
+                        select(name="is_active", data-width="100%").selectpicker
+                            option(value=1, selected= editUser.is_active == 1) Yes
+                            option(value=0, selected= editUser.is_active == 0) No
+                div.form-group
+                    label.control-label.col-sm-3(for="password") New Password
+                    div.col-sm-9
+                        input(type="password", placeholder="Password", name="password").form-control
+                div.form-group
+                    div.col-sm-9.col-sm-offset-3
+                        input.btn.btn-primary(type="submit", value="Save")

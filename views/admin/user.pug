@@ -1,0 +1,7 @@
+extends ../layout
+include ../mixins/_editUserForm
+
+block content
+    .container
+        .row
+            +editUserForm(editUser=editUser)

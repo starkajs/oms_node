@@ -15,8 +15,6 @@ class User {
         this.is_active = user[0].is_active;
     }
     async createUser(email, full_name, password) {
-        const saltRounds = 10;
-        //let salt = bcrypt.genSaltSync(saltRounds);
         let password_hash = bcrypt.hashSync(password);
         const s = new sql.sqlServer();
         let sqlQuery = `INSERT INTO solution_user (full_name, email, password_hash, is_active, role_id)

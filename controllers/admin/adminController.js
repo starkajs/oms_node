@@ -1,6 +1,7 @@
 const sql = require('../../services/tedious');
 const promisify = require('es6-promisify');
 const User = require('../../model/User');
+const bcrypt = require('bcrypt-nodejs');
 
 exports.roles = (req, res) => {
     req.flash('success', ``)
@@ -23,6 +24,40 @@ exports.users = (req, res) => {
     res.render('admin/users', {
         title: 'Solution Users'
     });
+}
+
+exports.user = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT a.*, b.role_name FROM solution_user AS a LEFT JOIN solution_role AS b on a.role_id = b.id WHERE a.id = '${req.params.id}'`
+    let editUser = await s.tpQuery(sqlQuery);
+    editUser = editUser[0];
+    sqlQuery = `SELECT * FROM solution_role ORDER BY role_name`;
+    let roles = await s.tpQuery(sqlQuery);
+    res.render('admin/user', {title: 'Solution User', editUser, roles})
+}
+
+exports.editUser = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = ''
+    if (req.body.password != null) {
+        let password_hash = bcrypt.hashSync(req.body.password);
+        sqlQuery = `UPDATE solution_user SET password_hash = '${password_hash}' WHERE id = '${req.params.id}'`
+    } else {
+        sqlQuery = `UPDATE solution_user SET full_name = '${req.body.full_name}',
+        email = '${req.body.email}', role_id = '${req.body.role_id}',
+        is_active = ${req.body.is_active} WHERE id = '${req.params.id}'`
+    }
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            req.flash('success', 'User updated');
+            res.redirect(`/admin/user/${req.params.id}`);
+            return;
+        })
+        .fail((err) => {
+            req.flash('danger', err);
+            res.redirect(`/admin/user/${req.params.id}`);
+            return;
+        })
 }
 
 exports.validateRegister = (req, res, next) => {
