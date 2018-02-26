@@ -77,16 +77,18 @@ passport.use(new LocalStrategy({
     passReqToCallback: true,
     session: true
 },
-    async function(req, username, password, done){
+    function(req, username, password, done){
         const s = new sql.sqlServer();
         let sqlQuery = `SELECT * FROM solution_user WHERE email = '${req.body.email}'`;
-        let user = await s.tpQuery(sqlQuery);
-        let password_check = bcrypt.compareSync(req.body.password, user[0]['password_hash']);
-        if (password_check) {
-            done(null, user[0]);
-            return;
-        };
-        return done(null, false);
-
+        s.tpQuery(sqlQuery).then((user) => {
+            let password_check = bcrypt.compareSync(req.body.password, user[0]['password_hash']);
+            if (password_check) {
+                done(null, user[0]);
+                return;
+            };
+            return done(null, false);
+        }).fail((err) => {
+            return done(err, false);
+        });
     }
 ))
