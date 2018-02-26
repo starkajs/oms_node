@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Optimum PPS Management System",
   "repository": "",
+  "engines": {
+    "node": ">= 7.6.0"
+  },
   "scripts": {
     "prod": "node ./start.js",
     "watch": "nodemon ./start.js --ignore public/",
