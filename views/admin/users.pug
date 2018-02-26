@@ -3,23 +3,31 @@ extends ../layout
 block content
     .container
         .row
-            h1 OMS Application Roles
+            h1 OMS Application Users
         .row
-            button(data-toggle="modal", data-target="#addRole").btn.btn-primary Add Role
+            button(data-toggle="modal", data-target="#addUser").btn.btn-primary Add User
         .row
             table#table.table.table-striped.table-condensed
-    div(role="dialog")#addRole.modal.fade
+    div(role="dialog")#addUser.modal.fade
         div.modal-dialog
             div.modal-content
                 div.modal-header
                     button(type="button", data-dismiss="modal").close &times;
-                    h4.modal-title Add Role
+                    h4.modal-title Add User
                 div.modal-body
-                    form(action="/api/admin/add_solution_role", method="post").form-horizontal
+                    form(action="/api/admin/add_solution_user", method="post").form-horizontal
                         div.form-group
-                            label(for="role_name").control-label.col-sm-3 Role Name
+                            label(for="full_name").control-label.col-sm-3 User Name
                             div.col-sm-9
-                                input(type="text", autofocus=true, placeholder="Role Name", name="role_name").form-control
+                                input(type="text", autofocus=true, placeholder="User Name", name="full_name").form-control
+                        div.form-group
+                            label(for="email").control-label.col-sm-3 Email
+                            div.col-sm-9
+                                input(type="email", placeholder="Email", name="email").form-control
+                        div.form-group
+                            label(for="role_id").control-label.col-sm-3 Role
+                            div.col-sm-9
+                                input(type="text", placeholder="Role", name="role").form-control
                         div.form-group
                             div.col-sm-9.col-sm-offset-3
                                 button(type="submit").btn.btn-primary Save
@@ -48,4 +56,4 @@ block scripts
     <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
 
     <!-- ROLES.js -->
-    script(src="../javascript/admin/roles.js")
+    script(src="../javascript/admin/users.js")

@@ -1,12 +1,13 @@
 module.exports = {
-    GOOGLE_CLIENT_ID: '355438076650-aqg10n5enooqup3o2akg24mctq47ai99.apps.googleusercontent.com',
-	GOOGLE_CLIENT_SECRET: 'Nqvva_P6UETX05wVGvDjXdpP',
-	//GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-	//GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-    AZURE_CLIENT_ID: '5381c92d-a996-4164-b866-dfde24e9a5e3',
-    AZURE_CLIENT_SECRET: 'yoWnq44wGZkl4pcmHvo6V7GDi+nn/1p2hFRfUzYu6ZU=',
-    AZURE_TENANT: 'ebfb652e-f609-41e9-8382-b6dc6cf94590',
-    AZURE_RESOURCE: 'https://graph.windows.net',
+	GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+	GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+	AZURE_CLIENT_ID: process.env.AZURE_CLIENT_ID,
+	AZURE_CLIENT_SECRET: process.env.AZURE_CLIENT_SECRET,
+	AZURE_TENANT: process.env.AZURE_TENANT,
+	AZURE_RESOURCE: process.env.AZURE_RESOURCE,
+	DB_USER: process.env.DB_USER,
+	DB_PASSWORD: process.env.DB_PASSWORD,
+	DB_SERVER: process.env.DB_SERVER,
 	sqlServer: {
 		userName: "anndrajs",
 		password: "Al3ssandr0",
@@ -18,6 +19,6 @@ module.exports = {
 			rowCollectionOnDone: true
 		}
 	},
-	cookieKey: 'asdflkdajsfladsjfldaksjfdsa',
-	cookieSecret: 'asdflkdajsfladsjfldaksjfdsa'
+	cookieKey: process.env.cookieKey,
+	cookieSecret: process.env.cookieSecret
 }

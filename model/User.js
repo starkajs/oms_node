@@ -1,15 +1,8 @@
 const sql = require('../services/tedious');
-
-/*
-const s = new sql.sqlServer();
-let sqlQuery = "SELECT * FROM solution_user;";
-s.tpQuery(sqlQuery).then((data) =>{
-    res.json(data);
-})
-*/
+const bcrypt = require('bcrypt');
+const validator = require('validator');
 
 class User {
-
     async initEmail(email) {
         const s = new sql.sqlServer();
         let sqlQuery = `SELECT * FROM solution_user WHERE email = '${email}'`;
@@ -20,7 +13,24 @@ class User {
         this.last_login = user[0].last_login;
         this.is_active = user[0].is_active;
     }
-
+    async createUser(email, full_name, password) {
+        const saltRounds = 10;
+        let salt = bcrypt.genSaltSync(saltRounds);
+        let password_hash = bcrypt.hashSync(password, salt);
+        const s = new sql.sqlServer();
+        let sqlQuery = `INSERT INTO solution_user (full_name, email, password_hash, is_active, role_id)
+                        OUTPUT inserted.id
+                        VALUES ('${full_name}', '${email}', '${password_hash}', 1, (SELECT id FROM solution_role WHERE role_name = 'Visitor'))`
+        try {
+            let new_user = await s.tpQuery(sqlQuery);
+            this.user_id = new_user;
+            this.email = email;
+            this.full_name = full_name;
+            this.password_hash = password_hash;
+        } catch(err) {
+            this.error = err;
+        }
+    }
 }
 
 module.exports = User;

@@ -19,7 +19,7 @@ html
                   ul.dropdown-menu
                     li
                       a(href="/admin/roles") Roles
-                      a(href="#") Users
+                      a(href="/admin/users") Users
                       a(href="#") Freeagent
             ul.nav.navbar-nav.navbar-right
               if user
@@ -31,7 +31,16 @@ html
                 li
                   a(href="/auth/azure") Login (Azure)
                 li
-                  a(href="#") Login
+                  a(href="/auth/login") Login
+
+    block messages
+      if locals.flashes
+        - const categories = Object.keys(locals.flashes)
+        each category in categories
+          each message in flashes[category]
+            div.container
+              div(class=`alert-dismissable alert alert-${category}`) #{message}
+                a(href="#", data-dismiss="alert").close &times;
 
     block content
       .container
@@ -45,7 +54,3 @@ html
             div &copy; 2018 Optimum PPS.
 
     block scripts
-
-
-
-

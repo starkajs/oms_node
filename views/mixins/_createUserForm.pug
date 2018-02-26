@@ -1,0 +1,24 @@
+mixin createUserForm()
+    div.panel.panel-default
+        div.panel-body
+            form.form-horizontal(action="/admin/register", method="post")
+                h2 Create User
+                div.form-group
+                    label.control-label.col-sm-3(for="full_name") Full Name
+                    div.col-sm-9
+                        input(type="text", autofocus=true, placeholder="Full Name", name="full_name", required="true").form-control
+                div.form-group
+                    label.control-label.col-sm-3(for="email") Email
+                    div.col-sm-9
+                        input(type="email", placeholder="Email", name="email", required="true").form-control
+                div.form-group
+                    label.control-label.col-sm-3(for="password") Password
+                    div.col-sm-9
+                        input(type="password", placeholder="Password", name="password", required="true").form-control
+                div.form-group
+                    label.control-label.col-sm-3(for="confirm_password") Confirm Password
+                    div.col-sm-9
+                        input(type="password", placeholder="Confirm Password", name="confirm_password", required="true").form-control
+                div.form-group
+                    div.col-sm-9.col-sm-offset-3
+                        input.btn.btn-primary(type="submit", value="Register")

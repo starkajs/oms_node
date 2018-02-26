@@ -1,9 +1,11 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const AzureStrategy = require('passport-azure-oauth2');
+const LocalStrategy = require('passport-local');
 const jwt = require('jwt-simple');
 const keys = require('../config/keys');
 const sql = require('../services/tedious');
+const bcrypt = require('bcrypt');
 
 passport.serializeUser((user, done) => {
     // console.log("serializeUser: ", user);
@@ -68,3 +70,23 @@ passport.use(new AzureStrategy({
             }
         })
     }));
+
+passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true,
+    session: true
+},
+    async function(req, username, password, done){
+        const s = new sql.sqlServer();
+        let sqlQuery = `SELECT * FROM solution_user WHERE email = '${req.body.email}'`;
+        let user = await s.tpQuery(sqlQuery);
+        let password_check = bcrypt.compareSync(req.body.password, user[0]['password_hash']);
+        if (password_check) {
+            done(null, user[0]);
+            return;
+        };
+        return done(null, false);
+
+    }
+))

@@ -1,4 +1,3 @@
-
 const app = require('./app');
 
 app.set('port', process.env.PORT || 5000);
