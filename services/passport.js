@@ -5,7 +5,8 @@ const LocalStrategy = require('passport-local');
 const jwt = require('jwt-simple');
 const keys = require('../config/keys');
 const sql = require('../services/tedious');
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs');
 
 passport.serializeUser((user, done) => {
     // console.log("serializeUser: ", user);
@@ -70,6 +71,30 @@ passport.use(new AzureStrategy({
             }
         })
     }));
+
+    /*
+passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true,
+    session: true
+},
+    function(req, username, password, done){
+        const s = new sql.sqlServer();
+        let sqlQuery = `SELECT * FROM solution_user WHERE email = '${req.body.email}'`;
+        s.tpQuery(sqlQuery).then((user) => {
+            let password_check = bcrypt.compareSync(req.body.password, user[0]['password_hash']);
+            if (password_check) {
+                done(null, user[0]);
+                return;
+            };
+            return done(null, false);
+        }).fail((err) => {
+            return done(err, false);
+        });
+    }
+))
+*/
 
 passport.use(new LocalStrategy({
     usernameField: 'email',

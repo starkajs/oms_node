@@ -1,5 +1,6 @@
 const sql = require('../services/tedious');
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs');
 const validator = require('validator');
 
 class User {
@@ -15,8 +16,8 @@ class User {
     }
     async createUser(email, full_name, password) {
         const saltRounds = 10;
-        let salt = bcrypt.genSaltSync(saltRounds);
-        let password_hash = bcrypt.hashSync(password, salt);
+        //let salt = bcrypt.genSaltSync(saltRounds);
+        let password_hash = bcrypt.hashSync(password);
         const s = new sql.sqlServer();
         let sqlQuery = `INSERT INTO solution_user (full_name, email, password_hash, is_active, role_id)
                         OUTPUT inserted.id
