@@ -49,8 +49,8 @@ app.use(
 // sessions allow us to store data on visitors from request to request
 // keeps users logged in and allows to send flash messages
 app.use(session({
-    secret: process.env.SECRET || keys.cookieSecret,
-    key: process.env.KEY || keys.cookieKey,
+    secret: process.env.cookieSecret || keys.cookieSecret,
+    key: process.env.cookieKey || keys.cookieKey,
     resave: false,
     saveUninitialized: false
 }));

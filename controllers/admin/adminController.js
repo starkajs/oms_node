@@ -4,7 +4,6 @@ const User = require('../../model/User');
 const bcrypt = require('bcrypt-nodejs');
 
 exports.roles = (req, res) => {
-    req.flash('success', ``)
     res.render('admin/roles', {
         title: 'Solution Roles'
     });
@@ -79,6 +78,7 @@ exports.validateRegister = (req, res, next) => {
         return;
     }
     next();
+    return;
 };
 
 exports.registerUser = async (req, res, next) => {
@@ -95,4 +95,5 @@ exports.registerUser = async (req, res, next) => {
         return ;
     }
     next();
+    return;
 };

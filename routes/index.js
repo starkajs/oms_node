@@ -3,6 +3,6 @@ const router = express.Router();
 const baseController = require('../controllers/baseController');
 
 // Do work here
-router.get('/', baseController.myMiddleware, baseController.homePage);
+router.get('/', baseController.homePage);
 
 module.exports = router;

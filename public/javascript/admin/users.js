@@ -1,5 +1,3 @@
-const roles = [{value: '1', text: 'Admin'}, {value: '2', text: 'Consultant'}];
-$.fn.editable.defaults.mode = 'inline';
 $(function(){
     let $table = $('#table').bootstrapTable({
         idField: 'id',
@@ -19,68 +17,35 @@ $(function(){
             field: 'full_name',
             title: 'Name',
             filterControl: 'input',
-            editable: {
-                type: 'text'
-            }
+            formatter: userNameFormatter
         }, {
             field: 'email',
             title: 'Email',
-            filterControl: 'input',
-            editable: {
-                type: 'text'
-            }
+            filterControl: 'input'
         }, {
             field: 'role_name',
             title: 'Role',
-            filterControl: 'input',
-            editable: {
-                type: 'select',
-                source: roles
-            }
+            filterControl: 'input'
         }, {
             field: 'is_active',
             title: 'Active',
             filterControl: 'input',
-            editable: {
-                type: 'select',
-                source: [{value: 0, text: 'No'}, {value: 1, text: 'Yes'}]
-            }
+            formatter: isActiveFormatter
         }, {
             field: 'last_login',
             title: 'Last Login'
         }]
     });
-    $table.on('editable-save.bs.table', function(e, field, row, old, $el){
-        $.ajax({
-            url: '../api/admin/update_solution_user',
-            type: 'POST',
-            data: {
-                role_id: row['id'],
-                update_field: field,
-                update_value: row[field]
-            },
-            success: function(data, status){
-                if (data['error']) {
-                    $('#update_message').removeClass();
-                    $('#update_message').addClass("alert alert-danger text-center")
-                } else {
-                    $('#update_message').removeClass();
-                    $('#update_message').addClass("alert alert-success text-center")
-                }
-                $('#update_message').text(data.message);
-                $('#update_message').delay(500).fadeIn('normal', function(){
-                    $(this).delay(2500).fadeOut();
-                })
-            },
-            error: function(data, status){
-                $('#update_message').removeClass();
-                $('#update_message').addClass("alert alert-danger text-center")
-                $('#update_message').text(data.responseJSON.message);
-                $('#update_message').delay(1000).fadeIn('normal', function(){
-                    $(this).delay(2500).fadeOut();
-                })
-
-            }
-        });
-    });
 })
+
+
+const userNameFormatter = function(value, row){
+    return '<a href="/admin/user/' + row.id + '">' + value + '</a>';
+};
+const isActiveFormatter = function(value){
+    if (value == 0) {
+        return 'No';
+    } else {
+        return 'Yes';
+    }
+};
