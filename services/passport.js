@@ -5,8 +5,8 @@ const LocalStrategy = require('passport-local');
 const jwt = require('jwt-simple');
 const keys = require('../config/keys');
 const sql = require('../services/tedious');
-//const bcrypt = require('bcrypt');
 const bcrypt = require('bcrypt-nodejs');
+const mail = require('../services/mail');
 
 passport.serializeUser((user, done) => {
     // console.log("serializeUser: ", user);
@@ -38,6 +38,7 @@ passport.use(new GoogleStrategy({
             done({error: "User doesn't exist"}, null);
         } else {
             let thisUser = data[0];
+            userLoggedIn(thisUser[0]['full_name']);
             sqlQuery = `UPDATE solution_user SET last_login = GETDATE() WHERE id = '${thisUser['id']}'`
             s.tpQuery(sqlQuery);
             done(null, thisUser);
@@ -65,6 +66,7 @@ passport.use(new AzureStrategy({
                 done({error: "User doesn't exist"}, null);
             } else {
                 let thisUser = data[0];
+                userLoggedIn(data[0]['full_name']);
                 sqlQuery = `UPDATE solution_user SET last_login = GETDATE() WHERE id = '${thisUser['id']}'`
                 s.tpQuery(sqlQuery);
                 done(null, thisUser);
@@ -72,7 +74,6 @@ passport.use(new AzureStrategy({
         })
     }));
 
-    /*
 passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',
@@ -85,6 +86,7 @@ passport.use(new LocalStrategy({
         s.tpQuery(sqlQuery).then((user) => {
             let password_check = bcrypt.compareSync(req.body.password, user[0]['password_hash']);
             if (password_check) {
+                userLoggedIn(user[0]['full_name']);
                 done(null, user[0]);
                 return;
             };
@@ -94,26 +96,12 @@ passport.use(new LocalStrategy({
         });
     }
 ))
-*/
 
-passport.use(new LocalStrategy({
-    usernameField: 'email',
-    passwordField: 'password',
-    passReqToCallback: true,
-    session: true
-},
-    function(req, username, password, done){
-        const s = new sql.sqlServer();
-        let sqlQuery = `SELECT * FROM solution_user WHERE email = '${req.body.email}'`;
-        s.tpQuery(sqlQuery).then((user) => {
-            let password_check = bcrypt.compareSync(req.body.password, user[0]['password_hash']);
-            if (password_check) {
-                done(null, user[0]);
-                return;
-            };
-            return done(null, false);
-        }).fail((err) => {
-            return done(err, false);
-        });
-    }
-))
+const userLoggedIn = async function(logged_user) {
+    await mail.send({
+        user: {email: 'andrew.stark@optimumpps.co.uk'},
+        subject: `User ${logged_user} logged in to OMS-NODE`,
+        filename: 'user_logged_in',
+        logged_user
+    });
+}

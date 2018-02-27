@@ -20,5 +20,10 @@ module.exports = {
 		}
 	},
 	cookieKey: process.env.cookieKey,
-	cookieSecret: process.env.cookieSecret
+	cookieSecret: process.env.cookieSecret,
+	MAIL_USER: 'info@optimumpps.co.uk',
+	MAIL_PASSWORD: '0ptimumPP5201602',
+	MAIL_HOST: 'smtp.office365.com',
+	MAIL_PORT: 587,
+	MAIL_USE_TLS: true
 }
