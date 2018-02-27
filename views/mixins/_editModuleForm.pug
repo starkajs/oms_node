@@ -1,0 +1,21 @@
+mixin editModuleForm()
+    div.panel.panel-default
+        div.panel-body
+            form.form-horizontal(action="/syssel/module/" + ss_module.id, method="post")
+                h2 Edit Module - #{ss_module.module_name}
+                br
+                div.form-group
+                    label.control-label.col-sm-3(for="id") ID
+                    div.col-sm-9
+                        input(type="text", placeholder="ID", name="id", required="true", value=ss_module.id, disabled="true").form-control
+                div.form-group
+                    label.control-label.col-sm-3(for="module_name") Module Name
+                    div.col-sm-9
+                        input(type="text", autofocus=true, placeholder="Module Name", name="module_name", required="true" value=ss_module.module_name).form-control
+                div.form-group
+                    label.control-label.col-sm-3(for="module_description") Description
+                    div.col-sm-9
+                        textarea(name="module_description", rows="10").form-control #{ss_module.module_description}
+                div.form-group
+                    div.col-sm-9.col-sm-offset-3
+                        input.btn.btn-primary(type="submit", value="Save")

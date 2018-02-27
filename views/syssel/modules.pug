@@ -1,0 +1,55 @@
+extends ../layout
+
+block content
+    .container
+        .row
+            h1 System Modules
+        .row
+            button(data-toggle="modal", data-target="#addModule").btn.btn-primary Add Module
+        .row
+            table#table.table.table-striped.table-condensed
+    div(role="dialog")#addModule.modal.fade
+        div.modal-dialog
+            div.modal-content
+                div.modal-header
+                    button(type="button", data-dismiss="modal").close &times;
+                    h4.modal-title Add Module
+                div.modal-body
+                    form(action="/api/syssel/add_module", method="post").form-horizontal
+                        div.form-group
+                            label(for="module_name").control-label.col-sm-3 Module Name
+                            div.col-sm-9
+                                input(type="text", autofocus=true, placeholder="Module Name", name="module_name").form-control
+                        div.form-group
+                            label(for="module_description").control-label.col-sm-3 Description
+                            div.col-sm-9
+                                textarea(rows="5", name="module_description").form-control
+                        div.form-group
+                            div.col-sm-9.col-sm-offset-3
+                                button(type="submit").btn.btn-primary Save
+                div.modal-footer
+                    button(type="button", data-dismiss="modal").btn.btn-default Close
+
+block scripts
+    <!-- BOOTSTRAP TABLE -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+
+    <!-- EXPORT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/export/bootstrap-table-export.min.js"></script>
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+
+    <!-- FILTER -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+    <!-- EDITABLE -->
+    <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+    <!-- MODULES.js -->
+    script(src="../javascript/syssel/modules.js")

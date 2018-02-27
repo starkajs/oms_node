@@ -16,6 +16,12 @@ router.get('/delete_feature/:id', sysselController.deleteFeature);
 
 
 // MODULES
+router.get('/modules', sysselController.modules);
+router.get('/module/:id', sysselController.module);
+router.post('/module/:id', sysselController.editModule);
+router.get('/delete_module/:id', sysselController.deleteModule);
+router.get('/submodule/:id', sysselController.subModule);
+router.post('/submodule/:id', sysselController.editSubModule);
 
 
 

@@ -85,4 +85,41 @@ router.get('/feature_systems/:id', async (req, res) => {
 
 router.post('/add_feature', sysselController.addFeature);
 
+
+// MODULES
+router.get('/modules', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `select *, (SELECT COUNT(1) FROM ss_system_module AS bb LEFT JOIN ss_sub_module as cc on bb.sub_module_id = cc.id WHERE cc.module_id = aa.id) as system_count
+                    from ss_module as aa
+                    ORDER BY module_name;`
+    let data = await s.tpQuery(sqlQuery);
+    res.json(data);
+})
+
+router.get('/submodules/:id', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `select *, (SELECT COUNT(1) FROM ss_system_module AS aa where aa.sub_module_id = a.id) as system_count
+                    from ss_sub_module as a
+                    where a.module_id = '${req.params.id}'
+                    ORDER BY a.sub_module_name`
+    let data = await s.tpQuery(sqlQuery);
+    res.json(data);
+})
+
+router.post('/add_module', sysselController.addModule);
+router.post('/add_sub_module/:id', sysselController.addSubModule);
+router.get('/delete_sub_module/:module_id/:sub_module_id', sysselController.deleteSubModule);
+
+router.get('/module_systems/:id', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT b.id AS system_id,
+                    b.system_name
+                    FROM ss_system_module AS a
+                    LEFT JOIN ss_system AS b ON a.system_id = b.id
+                    WHERE a.sub_module_id = '${req.params.id}'
+                    ORDER BY b.system_name;`
+    let systems = await s.tpQuery(sqlQuery);
+    res.json(systems)
+})
+
 module.exports = router;
