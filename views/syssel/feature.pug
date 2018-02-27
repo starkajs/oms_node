@@ -1,0 +1,40 @@
+extends ../layout
+include ../mixins/_editFeatureForm
+
+block content
+    .container
+        .row
+            a(href="/syssel/features").btn.btn-primary All Features
+        br
+        .row
+            div.col-sm-6
+                +editFeatureForm(feature=feature)
+            div.col-sm-6
+                div.panel.panel-default
+                    div.panel-body
+                        h2 Systems
+                        table#table.table.table-striped.table-condensed
+
+block scripts
+    <!-- BOOTSTRAP TABLE -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+
+    <!-- EXPORT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/export/bootstrap-table-export.min.js"></script>
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+
+    <!-- FILTER -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+    <!-- EDITABLE -->
+    <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+    <!-- CATEGORY SYSTEMS.js -->
+    script(src="../../javascript/syssel/featureSystems.js")

@@ -1,0 +1,21 @@
+mixin editFeatureForm()
+    div.panel.panel-default
+        div.panel-body
+            form.form-horizontal(action="/syssel/feature/" + feature.id, method="post")
+                h2 Edit Feature - #{feature.feature_name}
+                br
+                div.form-group
+                    label.control-label.col-sm-3(for="id") ID
+                    div.col-sm-9
+                        input(type="text", placeholder="ID", name="id", required="true", value=feature.id, disabled="true").form-control
+                div.form-group
+                    label.control-label.col-sm-3(for="feature_name") Feature Name
+                    div.col-sm-9
+                        input(type="text", autofocus=true, placeholder="Feature Name", name="feature_name", required="true" value=feature.feature_name).form-control
+                div.form-group
+                    label.control-label.col-sm-3(for="feature_description") Description
+                    div.col-sm-9
+                        textarea(name="feature_description").form-control #{feature.feature_description}
+                div.form-group
+                    div.col-sm-9.col-sm-offset-3
+                        input.btn.btn-primary(type="submit", value="Save")

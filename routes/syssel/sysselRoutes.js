@@ -10,6 +10,9 @@ router.get('/delete_category/:id', sysselController.deleteCategory);
 
 // FEATURES
 router.get('/features', sysselController.features);
+router.get('/feature/:id', sysselController.feature);
+router.post('/feature/:id', sysselController.editFeature);
+router.get('/delete_feature/:id', sysselController.deleteFeature);
 
 
 // MODULES
