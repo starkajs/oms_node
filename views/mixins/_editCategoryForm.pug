@@ -1,0 +1,21 @@
+mixin editCategoryForm()
+    div.panel.panel-default
+        div.panel-body
+            form.form-horizontal(action="/syssel/category/" + category.id, method="post")
+                h2 Edit Category - #{category.category_name}
+                br
+                div.form-group
+                    label.control-label.col-sm-3(for="id") ID
+                    div.col-sm-9
+                        input(type="text", placeholder="ID", name="id", required="true", value=category.id, disabled="true").form-control
+                div.form-group
+                    label.control-label.col-sm-3(for="category_name") Category Name
+                    div.col-sm-9
+                        input(type="text", autofocus=true, placeholder="Category Name", name="category_name", required="true" value=category.category_name).form-control
+                div.form-group
+                    label.control-label.col-sm-3(for="category_description") Description
+                    div.col-sm-9
+                        textarea(name="category_description").form-control #{category.category_description}
+                div.form-group
+                    div.col-sm-9.col-sm-offset-3
+                        input.btn.btn-primary(type="submit", value="Save")

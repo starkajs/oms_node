@@ -1,6 +1,7 @@
 html
   head
     title= `${title} | ${h.siteName}`
+    link(rel='icon', href='/images/favicon.ico')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
@@ -21,8 +22,30 @@ html
                   ul.dropdown-menu
                     li
                       a(href="/admin/roles") Roles
+                    li
                       a(href="/admin/users") Users
-                      a(href="#") Freeagent
+                    li
+                      a(href="/admin/industries") Industries
+                    li
+                      a(href="/admin/freeagent") Freeagent
+              ul.nav.navbar-nav
+                li.dropdown
+                  a.dropdown-toggle(href="#", data-toggle="dropdown" role="button") Solutions
+                    span.caret
+                  ul.dropdown-menu
+                    li
+                      a(href="/syssel/vendors") Vendors
+                    li
+                      a(href="/ssysel/systems") Systems
+                    li(role='separator').divider
+                    li
+                      a(href="/syssel/categories") Categories
+                    li
+                      a(href="/syssel/modules") Modules
+                    li
+                      a(href="/syssel/features") Features
+                    li
+                      a(href="/syssel/benefits") Benefits
             ul.nav.navbar-nav.navbar-right
               if user
                 li

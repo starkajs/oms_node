@@ -19,9 +19,12 @@ exports.addRole = async (req, res) => {
     res.redirect('/admin/roles')
 }
 
-exports.users = (req, res) => {
+exports.users = async (req, res) => {
+    const s = new sql.sqlServer();
+    sqlQuery = `SELECT * FROM solution_role ORDER BY role_name`;
+    let roles = await s.tpQuery(sqlQuery);
     res.render('admin/users', {
-        title: 'Solution Users'
+        title: 'Solution Users', roles
     });
 }
 
@@ -35,10 +38,21 @@ exports.user = async (req, res) => {
     res.render('admin/user', {title: 'Solution User', editUser, roles})
 }
 
+exports.addUser = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `INSERT INTO solution_user (full_name, email, role_id)
+                    OUTPUT inserted.id
+                    VALUES ('${req.body.full_name}', '${req.body.email}', '${req.body.role_id}')`
+    let message = await s.tpQuery(sqlQuery);
+    req.flash('success', `Successfully added`);
+    res.redirect('/admin/users')
+}
+
 exports.editUser = async (req, res) => {
+    console.log(req.body);
     const s = new sql.sqlServer();
     let sqlQuery = ''
-    if (req.body.password != null) {
+    if (req.body.password != '***') {
         let password_hash = bcrypt.hashSync(req.body.password);
         sqlQuery = `UPDATE solution_user SET password_hash = '${password_hash}' WHERE id = '${req.params.id}'`
     } else {

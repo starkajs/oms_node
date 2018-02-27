@@ -9,7 +9,7 @@ $(function(){
         showExport: true,
         filterControl: true,
         showColumns: true,
-        height: 600,
+        height: 700,
         columns: [{
             field: 'id',
             title: 'ID',

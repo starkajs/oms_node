@@ -4,4 +4,7 @@ include ../mixins/_editUserForm
 block content
     .container
         .row
+            a(href="/admin/users").btn.btn-primary All Users
+        br
+        .row
             +editUserForm(editUser=editUser)

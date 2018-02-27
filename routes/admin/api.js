@@ -36,4 +36,6 @@ router.get('/users', (req, res) => {
         })
 });
 
+router.post('/add_solution_user', adminController.addUser);
+
 module.exports = router;

@@ -3,12 +3,12 @@ extends ../layout
 block content
     .container
         .row
-            h1 OMS Application Users
+            h1 System Features
         .row
-            button(data-toggle="modal", data-target="#addUser").btn.btn-primary Add User
+            button(data-toggle="modal", data-target="#addFeature").btn.btn-primary Add Feature
         .row
             table#table.table.table-striped.table-condensed
-    div(role="dialog")#addUser.modal.fade
+    div(role="dialog")#addFeature.modal.fade
         div.modal-dialog
             div.modal-content
                 div.modal-header
@@ -25,11 +25,9 @@ block content
                             div.col-sm-9
                                 input(type="email", placeholder="Email", name="email").form-control
                         div.form-group
-                            label.control-label.col-sm-3(for="role_id") Role
+                            label(for="role_id").control-label.col-sm-3 Role
                             div.col-sm-9
-                                select(name="role_id", data-width="100%").selectpicker
-                                    each role in roles
-                                        option(value=role.id) #{role.role_name}
+                                input(type="text", placeholder="Role", name="role").form-control
                         div.form-group
                             div.col-sm-9.col-sm-offset-3
                                 button(type="submit").btn.btn-primary Save
@@ -48,6 +46,7 @@ block scripts
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/export/bootstrap-table-export.min.js"></script>
     <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
 
+
     <!-- FILTER -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
 
@@ -56,5 +55,5 @@ block scripts
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/editable/bootstrap-table-editable.js"></script>
     <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
 
-    <!-- ROLES.js -->
-    script(src="../javascript/admin/users.js")
+    <!-- FEATURES.js -->
+    script(src="../javascript/syssel/features.js")
