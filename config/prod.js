@@ -9,11 +9,11 @@ module.exports = {
 	DB_PASSWORD: process.env.DB_PASSWORD,
 	DB_SERVER: process.env.DB_SERVER,
 	sqlServer: {
-		userName: "anndrajs",
-		password: "Al3ssandr0",
-		server: "optmgt.database.windows.net",
+		userName: process.env.DB_USER,
+		password: process.env.DB_PASSWORD,
+		server: process.env.DB_SERVER,
 		options: {
-            database: "optmgt",
+            database: process.env.DB,
             encrypt: true,
 			rowCollectionOnRequestCompletion: true,
 			rowCollectionOnDone: true
@@ -21,9 +21,9 @@ module.exports = {
 	},
 	cookieKey: process.env.cookieKey,
 	cookieSecret: process.env.cookieSecret,
-	MAIL_USER: 'info@optimumpps.co.uk',
-	MAIL_PASSWORD: '0ptimumPP5201602',
-	MAIL_HOST: 'smtp.office365.com',
-	MAIL_PORT: 587,
+	MAIL_USER: process.env.MAIL_USER,
+	MAIL_PASSWORD: process.env.MAIL_PASSWORD,
+	MAIL_HOST: process.env.MAIL_HOST,
+	MAIL_PORT: process.env.MAIL_PORT,
 	MAIL_USE_TLS: true
 }
