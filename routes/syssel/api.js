@@ -3,41 +3,6 @@ const router = express.Router();
 const sql = require('../../services/tedious');
 const sysselController = require('../../controllers/syssel/sysselController');
 
-// CATEGORIES
-/*
-router.get('/categories', async (req, res) => {
-    const order = req.query.order || 'asc';
-    const offset = req.query.offset || 0;
-    const limit = req.query.limit || 10;
-    const s = new sql.sqlServer();
-    let sqlQuery = `SELECT COUNT(*) AS total_count FROM ss_category`;
-    let recordCount = await s.tpQuery(sqlQuery);
-    if (req.query.filter){
-        const filterJSON = JSON.parse(req.query.filter);
-        const filter_field = Object.keys(filterJSON)[0];
-        const filter_value = filterJSON[filter_field];
-        sqlQuery = `SELECT a.*, (SELECT COUNT(1) FROM ss_system_category AS aa WHERE aa.category_id = a.id) AS system_count
-        FROM ss_category AS a
-        WHERE LOWER(${filter_field}) like LOWER('%${filter_value}%')
-        ORDER BY category_name
-        OFFSET ${offset} ROWS
-        FETCH NEXT ${limit} ROWS ONLY;`;
-    } else {
-        sqlQuery = `SELECT a.*, (SELECT COUNT(1) FROM ss_system_category AS aa WHERE aa.category_id = a.id) AS system_count
-        FROM ss_category AS a
-        ORDER BY category_name
-        OFFSET ${offset} ROWS
-        FETCH NEXT ${limit} ROWS ONLY;`;
-    }
-
-    let data = await s.tpQuery(sqlQuery);
-    responseJson = {};
-    responseJson['total'] = recordCount[0]['total_count'];
-    responseJson['rows'] = data;
-    res.json(responseJson);
-});
-*/
-
 router.get('/categories', async (req, res) => {
     const s = new sql.sqlServer();
     let sqlQuery = `SELECT *, (SELECT COUNT(1) FROM ss_system_category AS aa WHERE aa.category_id = a.id) AS system_count
@@ -121,5 +86,55 @@ router.get('/module_systems/:id', async (req, res) => {
     let systems = await s.tpQuery(sqlQuery);
     res.json(systems)
 })
+
+// SYSTEMS
+router.get('/systems', async (req, res) => {
+    const order = req.query.order || 'asc';
+    const offset = req.query.offset || 0;
+    const limit = req.query.limit || 10;
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT COUNT(*) AS total_count FROM ss_system`;
+    let recordCount = await s.tpQuery(sqlQuery);
+    if (req.query['filter']) {
+        filter = JSON.parse(req.query['filter']);
+        sqlQuery = `SELECT COUNT(*) AS total_count FROM ss_system AS a WHERE LOWER(a.system_name) LIKE LOWER('%${filter['system_name']}%')`
+        recordCount = await s.tpQuery(sqlQuery);
+        sqlQuery = `SELECT *, (SELECT COUNT(1) FROM ss_system_vendor as aa where aa.system_id = a.id) as vendor_count
+        FROM ss_system AS a
+        WHERE LOWER(a.system_name) LIKE LOWER('%${filter['system_name']}%')
+        ORDER BY system_name
+        OFFSET ${offset} ROWS
+        FETCH NEXT ${limit} ROWS ONLY;`;
+    } else {
+        sqlQuery = `SELECT *, (SELECT COUNT(1) FROM ss_system_vendor as aa where aa.system_id = a.id) as vendor_count
+        FROM ss_system AS a
+        ORDER BY system_name
+        OFFSET ${offset} ROWS
+        FETCH NEXT ${limit} ROWS ONLY;`;
+    }
+    let data = await s.tpQuery(sqlQuery);
+    responseJson = {};
+    responseJson['total'] = recordCount[0]['total_count'];
+    responseJson['rows'] = data;
+    res.json(responseJson);
+});
+
+router.post('/add_system', sysselController.addSystem);
+
+router.get('/system_vendors/:id', sysselController.systemVendors);
+router.post('/add_system_vendors/:id', sysselController.addSystemVendors);
+router.get('/delete_system_vendors/:sid/:vid', sysselController.deleteSystemVendors);
+
+router.get('/system_categories/:id', sysselController.systemCategories);
+router.post('/add_system_categories/:id', sysselController.addSystemCategories);
+router.get('/delete_system_categories/:sid/:vid', sysselController.deleteSystemCategories);
+
+router.get('/system_features/:id', sysselController.systemFeatures);
+router.post('/add_system_features/:id', sysselController.addSystemFeatures);
+router.get('/delete_system_features/:sid/:vid', sysselController.deleteSystemFeatures);
+
+router.get('/system_modules/:id', sysselController.systemModules);
+router.post('/add_system_modules/:id', sysselController.addSystemModules);
+router.get('/delete_system_modules/:sid/:vid', sysselController.deleteSystemModules);
 
 module.exports = router;

@@ -1,0 +1,96 @@
+extends ../layout
+include ../mixins/_editSystemForm
+
+block content
+    .container-fluid
+        .row
+            .col-sm-11.col-sm-offset-1
+                a(href="/syssel/systems").btn.btn-primary All Systems
+        br
+        .row
+            div.col-sm-7.col-sm-offset-1
+                +editSystemForm(system=system)
+            div.col-sm-3
+                div.panel-group
+                    div.panel.panel-primary
+                        div.panel-heading
+                            h4.panel-title
+                                a(data-toggle="collapse", href="#vendorCollapse") Vendors
+                        div#vendorCollapse.panel-collapse.collapse
+                            div.panel-body
+                                select(id="vendors", data-live-search="true", multiple="true", title="Select one or more vendors", data-width="80%", data-actions-box="true").selectpicker
+                                    each vendor in vendors
+                                        option(value=vendor.id) #{vendor.vendor_name}
+                                span &emsp;
+                                button(onclick="addVendors()").btn.btn-info
+                                    span.glyphicon.glyphicon-plus
+                                table#vendorsTable.table.table-striped.table-condensed
+                div.panel-group
+                    div.panel.panel-primary
+                        div.panel-heading
+                            h4.panel-title
+                                a(data-toggle="collapse", href="#categoryCollapse") Categories
+                        div#categoryCollapse.panel-collapse.collapse
+                            div.panel-body
+                                select(id="categories", data-live-search="true", multiple="true", title="Select one or more categories", data-width="80%", data-actions-box="true").selectpicker
+                                    each category in categories
+                                        option(value=category.id) #{category.category_name}
+                                span &emsp;
+                                button(onclick="addCategories()").btn.btn-info
+                                    span.glyphicon.glyphicon-plus
+                                table#categoriesTable.table.table-striped.table-condensed
+                div.panel-group
+                    div.panel.panel-primary
+                        div.panel-heading
+                            h4.panel-title
+                                a(data-toggle="collapse", href="#featureCollapse") Features
+                        div#featureCollapse.panel-collapse.collapse
+                            div.panel-body
+                                select(id="features" data-live-search="true", multiple="true", title="Select one or more features", data-width="80%", data-actions-box="true").selectpicker
+                                    each feature in features
+                                        option(value=feature.id) #{feature.feature_name}
+                                span &emsp;
+                                button(onclick="addFeatures()").btn.btn-info
+                                    span.glyphicon.glyphicon-plus
+                                table#featuresTable.table.table-striped.table-condensed
+                div.panel-group
+                    div.panel.panel-primary
+                        div.panel-heading
+                            h4.panel-title
+                                a(data-toggle="collapse", href="#moduleCollapse") Modules
+                        div#moduleCollapse.panel-collapse.collapse
+                            div.panel-body
+                                select(id="modules" data-live-search="true", multiple="true", title="Select one or more modules", data-width="80%", data-actions-box="true").selectpicker
+                                    each sys_module in sys_modules
+                                        option(value=sys_module.id) #{sys_module.module_name} | #{sys_module.sub_module_name}
+                                span &emsp;
+                                button(onclick="addModules()").btn.btn-info
+                                    span.glyphicon.glyphicon-plus
+                                table#modulesTable.table.table-striped.table-condensed
+
+block scripts
+    <!-- BOOTSTRAP TABLE -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+
+    <!-- EXPORT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/export/bootstrap-table-export.min.js"></script>
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+
+    <!-- FILTER -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+    <!-- EDITABLE -->
+    <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+    <!-- SYSTEM ELEMENTS.js -->
+    script(src="../../javascript/syssel/systemVendors.js")
+    script(src="../../javascript/syssel/systemCategories.js")
+    script(src="../../javascript/syssel/systemFeatures.js")
+    script(src="../../javascript/syssel/systemModules.js")

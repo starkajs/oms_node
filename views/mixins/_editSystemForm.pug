@@ -1,0 +1,63 @@
+mixin editSystemForm()
+    div.panel.panel-default
+        div.panel-body
+            form.form-horizontal(action="/syssel/system/" + system.id, method="post")
+                h2 Edit System - #{system.system_name}
+                br
+                div.form-group
+                    label.control-label.col-sm-2(for="id") ID
+                    div.col-sm-10
+                        input(type="text", placeholder="ID", name="id", required="true", value=system.id, disabled="true").form-control
+                div.form-group
+                    label.control-label.col-sm-2(for="system_name") System Name
+                    div.col-sm-4
+                        input(type="text", autofocus=true, placeholder="System Name", name="system_name", required="true" value=system.system_name).form-control
+                    label.control-label.col-sm-2(for="system_url") Website
+                    div.col-sm-4
+                        input(type="url", placeholder="System URL", name="system_url", value=system.system_url).form-control
+                div.form-group
+                    label.control-label.col-sm-2(for="system_description") Description
+                    div.col-sm-4
+                        textarea(name="system_description", rows="5").form-control #{system.system_description}
+                    label.control-label.col-sm-2(for="optimum_view") Optimum View
+                    div.col-sm-4
+                        textarea(name="optimum_view", rows="5").form-control #{system.optimum_view}
+                div.form-group
+                    label.control-label.col-sm-2(for="average_implementation_months") Avg. Impl. [months]
+                    div.col-sm-2
+                        input(type="number", placeholder="12", name="average_implementation_months", value=system.average_implementation_months || 0).form-control
+                    label.control-label.col-sm-2(for="current_installations") Installations
+                    div.col-sm-2
+                        input(type="number", placeholder="3000", name="current_installations", value=system.current_installations || 0).form-control
+                    label.control-label.col-sm-2(for="current_user") Users
+                    div.col-sm-2
+                        input(type="number", placeholder="40000", name="current_users", value=system.current_users || 0).form-control
+                div.form-group
+                    label.control-label.col-sm-2(for="is_saas") SaaS / On-Premise
+                    div.col-sm-10
+                        select(name="is_saas", title="Select ...", data-width="100%").selectpicker
+                            option(value=1, selected= system.is_saas == 1) SaaS (Cloud)
+                            option(value=0, selected= system.is_saas == 0) On-Premise
+                            option(value=2, selected= system.is_saas == 2) Both
+                div.form-group
+                    label.control-label.col-sm-2(for="currency") Currency
+                    div.col-sm-3
+                        select(name="currency", title="Select ...", data-width="100%").selectpicker
+                            each currency in currencies
+                                option(value=currency.code, selected= system.currency == currency.code) #{currency.currency_name}
+                    label.control-label.col-sm-2(for="pricing_comment") Pricing Comment
+                    div.col-sm-5
+                        textarea(name="pricing_comment", rows="5").form-control #{system.pricing_comment}
+                div.form-group
+                    label.control-label.col-sm-2(for="initial_licence_cost") Initial Licence
+                    div.col-sm-2
+                        input(type="number", placeholder="3000", name="initial_licence_cost", value=system.initial_licence_cost || 0).form-control
+                    label.control-label.col-sm-2(for="price_per_user_annual") Per User Per Annum
+                    div.col-sm-2
+                        input(type="number", placeholder="3000", name="price_per_user_annual", value=system.price_per_user_annual || 0).form-control
+                    label.control-label.col-sm-2(for="annual_maintenance_cost") Annual Maintenance
+                    div.col-sm-2
+                        input(type="number", placeholder="40000", name="annual_maintenance_cost", value=system.annual_maintenance_cost || 0).form-control
+                div.form-group
+                    div.col-sm-10.col-sm-offset-2
+                        input.btn.btn-primary(type="submit", value="Save")

@@ -1,0 +1,85 @@
+extends ../layout
+
+block content
+    .container-fluid
+        .row
+            .col-sm-11.col-sm-offset-1
+                h1 Systems
+        .row
+            .col-sm-11.col-sm-offset-1
+                button(data-toggle="modal", data-target="#addSystem").btn.btn-primary Add System
+        .row
+            .col-sm-7.col-sm-offset-1
+                table#table.table.table-striped.table-condensed
+            .col-sm-3
+                h3.text-danger.text-center Work In Progress
+                h3 System Filters
+                    small &emsp; Leave blank to include all
+                hr
+                h4 Categories
+                select(data-width="100%", multiple="true", data-live-search="true", title="Select one or more categories", data-actions-box="true", id="catFilter").selectpicker
+                    each category in categories
+                        option(value=category.id) #{category.category_name}
+                h4 Features
+                select(data-width="100%", multiple="true", data-live-search="true", title="Select one or more features", data-actions-box="true", id="featFilter").selectpicker
+                    each feature in features
+                        option(value=feature.id) #{feature.feature_name}
+                h4 Modules (Sub-Modules)
+                select(data-width="100%", multiple="true", data-live-search="true", title="Select one or more modules", data-actions-box="true", id="moduleFilter").selectpicker
+                    each sys_module in sys_modules
+                        option(value=sys_module.sub_module_id) #{sys_module.module_name} | #{sys_module.sub_module_name}
+                hr
+                button(onclick="filterSystems()" disabled="true").btn.btn-info Apply Filters &emsp;
+                    span.glyphicon.glyphicon-filter
+                hr
+
+    div(role="dialog")#addSystem.modal.fade
+        div.modal-dialog.modal-lg
+            div.modal-content
+                div.modal-header
+                    button(type="button", data-dismiss="modal").close &times;
+                    h4.modal-title Add System
+                div.modal-body
+                    form(action="/api/syssel/add_system", method="post").form-horizontal
+                        div.form-group
+                            label(for="system_name").control-label.col-sm-3 System Name
+                            div.col-sm-9
+                                input(type="text", autofocus=true, placeholder="System Name", name="system_name").form-control
+                        div.form-group
+                            label(for="system_url").control-label.col-sm-3 Website
+                            div.col-sm-9
+                                input(type="url", placeholder="System URL", name="system_url").form-control
+                        div.form-group
+                            label(for="system_description").control-label.col-sm-3 Description
+                            div.col-sm-9
+                                textarea(rows="5", name="system_description").form-control
+                        div.form-group
+                            div.col-sm-9.col-sm-offset-3
+                                button(type="submit").btn.btn-primary Save
+                div.modal-footer
+                    button(type="button", data-dismiss="modal").btn.btn-default Close
+
+block scripts
+    <!-- BOOTSTRAP TABLE -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+
+    <!-- EXPORT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/export/bootstrap-table-export.min.js"></script>
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+
+    <!-- FILTER -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+    <!-- EDITABLE -->
+    <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+    <!-- SYSTEMS.js -->
+    script(src="../javascript/syssel/systems.js")
+    script(src="../javascript/syssel/systemFilters.js")
