@@ -104,8 +104,10 @@ exports.editMetric = async (req, res) => {
     const s = new sql.sqlServer();
     let sqlQuery = `UPDATE ea_metric SET value_driver_id = '${req.body.value_driver}',
                     metric_category = '${req.body.metric_category}', metric_name = '${req.body.metric_name}',
-                    formula = '${req.body.formula}', process_id = ${req.body.process || 'NULL'}, is_key_performance_indicator = ${req.body.kpi}
+                    formula = '${req.body.formula}', process_id = ${req.body.process || 'NULL'}, is_key_performance_indicator = ${req.body.kpi},
+                    lead_lag = '${req.body.lead_lag}'
                     WHERE id = ${req.params.mid}`
+    console.log(sqlQuery);
     s.tpQuery(sqlQuery)
         .then(() => {
             req.flash('success', 'Metric updated');

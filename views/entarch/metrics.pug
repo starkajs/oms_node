@@ -44,16 +44,22 @@ block content
                                     option(value=1) Yes
                                     option(value=0) No
                         div.form-group
-                            label(for="process").control-label.col-sm-2 Process
+                            label(for="lead_lag").control-label.col-sm-2 Lead/Lag
                             div.col-sm-4
-                                select(name="process", data-width="100%", data-live-search="true", title="Select a process").selectpicker
-                                    each ea_process in processes
-                                        option(value=ea_process.id) #{ea_process.process}
+                                select(name="lead_lag", data-width="100%").selectpicker
+                                    option(value="Lagging") Lagging
+                                    option(value="Leading") Leading
                             label(for="value_driver").control-label.col-sm-2 Value Driver
                             div.col-sm-4
                                 select(name="value_driver", data-width="100%", title="Select a driver").selectpicker
                                     each driver in drivers
                                         option(value=driver.id) #{driver.driver_name}
+                        div.form-group
+                            label(for="process").control-label.col-sm-2 Process
+                            div.col-sm-10
+                                select(name="process", data-width="100%", data-live-search="true", title="Select a process").selectpicker
+                                    each ea_process in processes
+                                        option(value=ea_process.id) #{ea_process.process}
                         div.form-group
                             div.col-sm-10.col-sm-offset-2
                                 button(type="submit").btn.btn-primary Save

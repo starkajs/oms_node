@@ -46,6 +46,10 @@ $(function(){
             field: 'driver_name',
             title: 'Value Driver',
             filterControl: 'input'
+        }, {
+            field: 'lead_lag',
+            title: 'Leading/Lagging',
+            filterControl: 'input'
         }]
     });
 })
