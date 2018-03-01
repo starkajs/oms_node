@@ -1,0 +1,46 @@
+extends ../layout
+include ../mixins/_editProjectForm
+
+block content
+    .container-fluid
+        .row
+            .col-sm-10.col-sm-offset-1
+                a(href="/optimum/projects").btn.btn-primary All Projects
+                span &emsp;
+                a(href="/optimum/client/" + project.client_id).btn.btn-primary Client
+
+        br
+        .row
+            .col-sm-6.col-sm-offset-1
+                +editProjectForm(project=project)
+            .col-sm-5.col
+                div.panel.panel-default
+                    div.panel-body
+                        h4 Project Tasks
+                        input(id="task_name", placeholder="New Task Name").form-control
+                        br
+                        button(onclick="addTask()").btn.btn-primary Add
+                        table#tasksTable.table.table-striped.table-condensed
+
+block scripts
+    <!-- BOOTSTRAP TABLE -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+
+    <!-- EXPORT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/export/bootstrap-table-export.min.js"></script>
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+    <!-- FILTER -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+    <!-- EDITABLE -->
+    <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+    <!-- PROJECTS.js -->
+    script(src="../../javascript/optimum/project.js")

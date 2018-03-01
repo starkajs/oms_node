@@ -30,3 +30,37 @@ exports.editClient = async (req, res) => {
             res.redirect(`/optimum/client/${req.params.cid}`);
         })
 }
+
+exports.projects = async (req, res) => {
+    res.render('optimum/projects', {title: 'Projects'})
+}
+
+exports.project = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM vw_project WHERE id = '${req.params.pid}'`
+    let project = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT * FROM project_type ORDER BY project_type_name`;
+    let project_types = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT * FROM project_area ORDER BY project_area_name`;
+    let project_areas = await s.tpQuery(sqlQuery);
+    res.render('optimum/project', {
+        title: 'Project', project: project[0], project_types, project_areas
+    })
+}
+
+exports.editProject = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `UPDATE project SET project_name = '${req.body.project_name}', project_type_id = '${req.body.project_type_id}',
+                    project_area_id = '${req.body.project_area_id}', erp_id = '${req.body.erp_id}', crm_id = '${req.body.crm_id}',
+                    is_internal_project = ${req.body.is_internal_project}, project_status = '${req.body.project_status}'
+                    WHERE id = '${req.params.pid}'`
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            req.flash('success', 'Project updated');
+            res.redirect(`/optimum/project/${req.params.pid}`);
+        })
+        .fail((err) => {
+            req.flash('danger', err['message']);
+            res.redirect(`/optimum/project/${req.params.pid}`);
+        })
+}

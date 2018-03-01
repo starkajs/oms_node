@@ -1,0 +1,40 @@
+mixin editProjectForm()
+    div.panel.panel-default
+        div.panel-body
+            form.form-horizontal(action="/optimum/project/" + project.id, method="post")
+                h2 Edit Project - #{project.project_name}
+                    small &emsp;#{project.client_name}
+                br
+                div.form-group
+                    label(for="project_name").control-label.col-sm-2 Name
+                    div.col-sm-6
+                        input(type="text", placeholder="Name", name="project_name", value=project.project_name).form-control
+                    label(for="is_internal_project").control-label.col-sm-2 Client/Internal
+                    div.col-sm-2
+                        select(name="is_internal_project", data-width="100%", title="Select a project type").selectpicker
+                            option(value=0, selected= project.is_internal_project == 0) Client Project
+                            option(value=1, selected= project.is_internal_project == 1) Internal Project
+                div.form-group
+                    label(for="project_type_id").control-label.col-sm-2 Project Type
+                    div.col-sm-4
+                        select(name="project_type_id", data-width="100%", title="Select a project type").selectpicker
+                            each project_type in project_types
+                                option(value=project_type.id, selected= project.project_type_id == project_type.id) #{project_type.project_type_name}
+                    label(for="project_area_id").control-label.col-sm-2 Project Area
+                    div.col-sm-4
+                        select(name="project_area_id", data-width="100%", title="Select a project area").selectpicker
+                            each project_area in project_areas
+                                option(value=project_area.id, selected= project.project_area_id == project_area.id) #{project_area.project_area_name}
+                div.form-group
+                    label(for="project_status").control-label.col-sm-2 Status
+                    div.col-sm-2
+                        input(type="text", placeholder="Status", name="project_status", value=project.project_status).form-control
+                    label(for="erp_id").control-label.col-sm-2 ERP
+                    div.col-sm-2
+                        input(type="text", placeholder="ERP", name="erp_id", value=project.erp_id).form-control
+                    label(for="crm_id").control-label.col-sm-2 CRM
+                    div.col-sm-2
+                        input(type="text", placeholder="CRM", name="crm_id", value=project.crm_id).form-control
+                div.form-group
+                    div.col-sm-10.col-sm-offset-2
+                        button(type="submit").btn.btn-primary Save

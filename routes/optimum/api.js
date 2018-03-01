@@ -66,4 +66,31 @@ router.post('/add_client_project/:cid', async (req, res) => {
         })
 })
 
+router.get('/projects', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM vw_project ORDER BY client_name, project_name`;
+    let projects = await s.tpQuery(sqlQuery);
+    res.json(projects);
+})
+
+router.get('/project_tasks/:pid', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM project_task WHERE project_id = '${req.params.pid}'`
+    let tasks = await s.tpQuery(sqlQuery);
+    res.json(tasks);
+})
+
+router.post('/add_project_task/:pid', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `INSERT INTO project_task (project_id, task_name)
+                    VALUES ('${req.params.pid}', '${req.body.task_name}')`
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            res.json({message: 'Added task'})
+        })
+        .fail((err) => {
+            req.json({message: err['message']});
+        })
+})
+
 module.exports = router;
