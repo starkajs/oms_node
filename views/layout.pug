@@ -78,6 +78,11 @@ html
               div(class=`alert-dismissable alert alert-${category}`) #{message}
                 a(href="#", data-dismiss="alert").close &times;
 
+    block updateMessage
+        br
+        .container-fluid
+            div#update_message.text-center
+
     block content
       .container
         .row
@@ -85,8 +90,8 @@ html
             h1 Welcome to the Optimum Management System
     block footer
         br
-        .container
-            div#update_message.text-center
-            div &copy; 2018 Optimum PPS.
+        .container-fluid
+            div.col-sm-offset-1
+              div &copy; 2018 Optimum PPS.
 
     block scripts

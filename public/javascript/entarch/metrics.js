@@ -43,7 +43,7 @@ $(function(){
             title: 'Process',
             filterControl: 'input'
         },{
-            field: 'value_driver',
+            field: 'driver_name',
             title: 'Value Driver',
             filterControl: 'input'
         }]

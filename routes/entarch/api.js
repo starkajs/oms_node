@@ -58,4 +58,21 @@ router.get('/requirements', async (req, res) => {
     res.json(requirements);
 })
 
+router.post('/add_metric', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `INSERT INTO ea_metric (metric_category, metric_name, formula, unit_of_measure, is_key_performance_indicator, process_id, value_driver_id)
+                    VALUES ('${req.body.metric_category}', '${req.body.metric_name}', '${req.body.formula}', '${req.body.unit_of_measure}',
+                    ${req.body.kpi}, ${req.body.process}, '${req.body.value_driver}')`
+    console.log(sqlQuery);
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            req.flash('success', 'Metric added');
+            res.redirect('/entarch/metrics');
+        })
+        .fail((err) => {
+            req.flash('danger', err['message']);
+            res.redirect('/entarch/metrics');
+        })
+})
+
 module.exports = router;

@@ -72,8 +72,17 @@ exports.editProcess = (req, res) => {
         })
 }
 
-exports.metrics = (req, res) => {
-    res.render('entarch/metrics', {title: 'Metrics'})
+exports.metrics = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT DISTINCT unit_of_measure FROM ea_metric ORDER BY unit_of_measure`;
+    let units = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT id, process, order_column FROM vw_ea_process ORDER BY order_column;`;
+    let processes = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT * FROM ea_value_driver ORDER BY driver_name;`
+    let drivers = await s.tpQuery(sqlQuery);
+    res.render('entarch/metrics', {
+        title: 'Metrics', units, processes, drivers
+    })
 }
 
 exports.metric = async (req, res) => {

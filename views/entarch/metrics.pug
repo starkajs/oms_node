@@ -5,7 +5,60 @@ block content
         .row.col-sm-10.col-sm-offset-1
             h1 Metrics
         .row.col-sm-10.col-sm-offset-1
+            button(data-toggle="modal", data-target="#addMetric").btn.btn-primary Add Metric
+        .row.col-sm-10.col-sm-offset-1
             table#table.table.table-striped.table-condensed
+    div(role="dialog")#addMetric.modal.fade
+        div.modal-dialog.modal-lg
+            div.modal-content
+                div.modal-header
+                    button(type="button", data-dismiss="modal").close &times;
+                    h4.modal-title Add Metric
+                div.modal-body
+                    form(action="/api/entarch/add_metric", method="post").form-horizontal
+                        div.form-group
+                            label(for="metric_category").control-label.col-sm-2 Category
+                            div.col-sm-3
+                                select(name="metric_category", data-width="100%", title="Select a category").selectpicker
+                                    option(value="Cost Effectiveness") Cost Effectiveness
+                                    option(value="Cycle Time") Cycle Time
+                                    option(value="Process Efficiency") Process Efficiency
+                                    option(value="Staff Productivity") Staff Productivity
+                                    option(value="Supplemental Information") Supplemental Information
+                            label(for="metric_name").control-label.col-sm-2 Name
+                            div.col-sm-5
+                                input(type="text", placeholder="Name", name="metric_name").form-control
+                        div.form-group
+                            label(for="formula").control-label.col-sm-2 Formula
+                            div.col-sm-10
+                                textarea(name="formula", rows="3").form-control
+                        div.form-group
+                            label(for="unit_of_measure").control-label.col-sm-2 Unit
+                            div.col-sm-4
+                                select(name="unit_of_measure", data-width="100%", data-live-search="true", title="Select a unit").selectpicker
+                                    each unit in units
+                                        option(value=unit.unit_of_measure) #{unit.unit_of_measure}
+                            label(for="kpi").control-label.col-sm-2 KPI
+                            div.col-sm-4
+                                select(name="kpi", data-width="100%").selectpicker
+                                    option(value=1) Yes
+                                    option(value=0) No
+                        div.form-group
+                            label(for="process").control-label.col-sm-2 Process
+                            div.col-sm-4
+                                select(name="process", data-width="100%", data-live-search="true", title="Select a process").selectpicker
+                                    each ea_process in processes
+                                        option(value=ea_process.id) #{ea_process.process}
+                            label(for="value_driver").control-label.col-sm-2 Value Driver
+                            div.col-sm-4
+                                select(name="value_driver", data-width="100%", title="Select a driver").selectpicker
+                                    each driver in drivers
+                                        option(value=driver.id) #{driver.driver_name}
+                        div.form-group
+                            div.col-sm-10.col-sm-offset-2
+                                button(type="submit").btn.btn-primary Save
+                div.modal-footer
+                    button(type="button", data-dismiss="modal").btn.btn-default Close
 
 block scripts
     <!-- BOOTSTRAP TABLE -->
