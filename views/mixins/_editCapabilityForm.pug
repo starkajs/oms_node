@@ -1,0 +1,25 @@
+mixin editCapabilityForm()
+    div.panel.panel-default
+        div.panel-body
+            form.form-horizontal(action="/entarch/edit_capability/" + capability.id, method="post")
+                h4 #{capability.short_code} - #{capability.capability_name}
+                br
+                div.form-group
+                    label.control-label.col-sm-3(for="capability_id") ID
+                    div.col-sm-9
+                        input(type="text", placeholder="ID", name="capability_id", required="true", value=capability.id, disabled="true").form-control
+                div.form-group
+                    label.control-label.col-sm-3(for="short_code") Short Code
+                    div.col-sm-9
+                        input(type="text", placeholder="Short Code", name="short_code", required="true" value=capability.short_code).form-control
+                div.form-group
+                    label.control-label.col-sm-3(for="capability_name") Name
+                    div.col-sm-9
+                        input(type="text", autofocus=true, placeholder="Name", name="capability_name", required="true" value=capability.capability_name).form-control
+                div.form-group
+                    label.control-label.col-sm-3(for="capability_description") Description
+                    div.col-sm-9
+                        textarea(name="capability_description", rows="10").form-control #{capability.capability_description}
+                div.form-group
+                    div.col-sm-9.col-sm-offset-3
+                        input.btn.btn-primary(type="submit", value="Save")

@@ -1,0 +1,28 @@
+mixin editProcessForm()
+    div.panel.panel-default
+        div.panel-body
+            form.form-horizontal(action="/entarch/edit_process/" + ea_process.id, method="post")
+                h4 #{ea_process.short_code} - #{ea_process.process_name}
+                br
+                div.form-group
+                    label(for="process_level").control-label.col-sm-2 Process Level
+                    div.col-sm-3
+                        select(name="process_level", data-width="100%").selectpicker
+                            option(value="1 - Business Capability", selected= ea_process.process_level == '1 - Business Capability') 1 - Business Capability
+                            option(value="2 - Process Group", selected= ea_process.process_level == '2 - Process Group') 2 - Process Group
+                            option(value="3 - Process", selected= ea_process.process_level == '3 - Process') 3 - Process
+                            option(value="4 - Activity", selected= ea_process.process_level == '4 - Activity') 4 - Activity
+                            option(value="5 - Task", selected= ea_process.process_level == '5 - Task') 5 - Task
+                            option(value="6 - Sub-Task", selected= ea_process.process_level == '6 - Sub-Task') 6 - Sub-Task
+                    div.col-sm-1
+                        input(type="text", placeholder="Short Code", name="short_code", required="true" value=ea_process.short_code).form-control
+                    div.col-sm-6
+                        input(type="text", autofocus=true, placeholder="Name", name="process_name", required="true" value=ea_process.process_name).form-control
+
+                div.form-group
+                    label.control-label.col-sm-2(for="process_description") Description
+                    div.col-sm-10
+                        textarea(name="process_description", rows="5").form-control #{ea_process.process_description}
+                div.form-group
+                    div.col-sm-9.col-sm-offset-2
+                        input.btn.btn-primary(type="submit", value="Save")

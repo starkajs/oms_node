@@ -1,0 +1,64 @@
+extends ../layout
+include ../mixins/_editCapabilityForm
+
+block content
+    .container-fluid
+        .row
+            .col-sm-10.col-sm-offset-1
+                a(href="/entarch/capabilities").btn.btn-primary All Capabilities
+        br
+        .row
+            .col-sm-3.col-sm-offset-1
+                +editCapabilityForm(capability=capability)
+            .col-sm-7
+                div.panel.panel-default
+                    div.panel-body
+                        h4 Processes for &emsp;
+                            strong.text-primary #{capability.short_code} - #{capability.capability_name}
+                            hr
+                            form(action="/entarch/add_process/" + capability.id, method="post").form-inline
+                                div.form-group
+                                    label(for="process_level").label-control
+                                    select(name="process_level").selectpicker
+                                        option(value="2 - Process Group") 2 - Process Group
+                                        option(value="3 - Process") 3 - Process
+                                        option(value="4 - Activity") 4 - Activity
+                                        option(value="5 - Task") 5 - Task
+                                        option(value="6 - Sub-Task") 6 - Sub-Task
+                                span &emsp;
+                                div.form-group
+                                    label(for="short_code").label-control
+                                    input(type="text", name="short_code", placeholder="Short Code").form-control
+                                span &emsp;
+                                div.form-group
+                                    label(for="process_name").label-control
+                                    input(type="text", name="process_name", placeholder="Process Name").form-control
+                                span &emsp;
+                                div.form-group
+                                    button(type="submit").btn.btn-primary Add Process
+                        hr
+                        table#table.table.table-striped.table-condensed
+
+
+block scripts
+    <!-- BOOTSTRAP TABLE -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+
+    <!-- EXPORT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/export/bootstrap-table-export.min.js"></script>
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+    <!-- FILTER -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+    <!-- EDITABLE -->
+    <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+    <!-- ROLES.js -->
+    script(src="../../javascript/entarch/processes.js")

@@ -38,6 +38,7 @@ html
                       a(href="/syssel/vendors") Vendors
                     li
                       a(href="/syssel/systems") Systems
+
                     li(role='separator').divider
                     li
                       a(href="/syssel/categories") Categories
@@ -45,6 +46,17 @@ html
                       a(href="/syssel/modules") Modules
                     li
                       a(href="/syssel/features") Features
+              ul.nav.navbar-nav
+                li.dropdown
+                  a.dropdown-toggle(href="#", data-toggle="dropdown" role="button") Process Framework
+                    span.caret
+                  ul.dropdown-menu
+                    li
+                      a(href="/entarch/capabilities") Business Capabilities
+                    li
+                      a(href="/entarch/metrics") Metrics
+                    li
+                      a(href="/entarch/requirements") Solution Requirements
             ul.nav.navbar-nav.navbar-right
               if user
                 li

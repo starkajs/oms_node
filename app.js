@@ -21,6 +21,8 @@ const adminRoutes = require('./routes/admin/adminRoutes');
 const adminApiRoutes = require('./routes/admin/api');
 const sysselRoutes = require('./routes/syssel/sysselRoutes');
 const sysselApiRoutes = require('./routes/syssel/api');
+const entarchRoutes = require('./routes/entarch/entarchRoutes');
+const entarchApiRoutes = require('./routes/entarch/api');
 
 // create the Express app
 const app = express();
@@ -87,6 +89,8 @@ app.use('/admin', adminRoutes);
 app.use('/api/admin', adminApiRoutes);
 app.use('/syssel', sysselRoutes);
 app.use('/api/syssel', sysselApiRoutes);
+app.use('/entarch', entarchRoutes);
+app.use('/api/entarch', entarchApiRoutes);
 
 
 // If above routes don't work, 404 and forward to error handler
