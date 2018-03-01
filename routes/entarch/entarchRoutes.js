@@ -14,4 +14,6 @@ router.get('/metrics', entarchController.metrics);
 router.get('/metric/:mid', entarchController.metric);
 router.post('/metric/:mid', entarchController.editMetric);
 
+router.get('/requirements', entarchController.requirements);
+
 module.exports = router;

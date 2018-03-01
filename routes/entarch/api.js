@@ -51,4 +51,11 @@ router.get('/metrics', async (req, res) => {
     res.json(metrics);
 })
 
+router.get('/requirements', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM vw_ea_solution_requirement ORDER BY business_capability, process`
+    let requirements = await s.tpQuery(sqlQuery);
+    res.json(requirements);
+})
+
 module.exports = router;

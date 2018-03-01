@@ -107,3 +107,7 @@ exports.editMetric = async (req, res) => {
             res.redirect(`/entarch/metric/${req.params.mid}`);
         })
 }
+
+exports.requirements = (req, res) => {
+    res.render('entarch/requirements', {title: 'Standard Solution Requirements'})
+}
