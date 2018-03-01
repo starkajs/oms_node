@@ -38,4 +38,11 @@ router.get('/users', (req, res) => {
 
 router.post('/add_solution_user', adminController.addUser);
 
+router.get('/industries', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM trbc ORDER BY id`;
+    let industries = await s.tpQuery(sqlQuery);
+    res.json(industries);
+})
+
 module.exports = router;

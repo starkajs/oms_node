@@ -111,3 +111,9 @@ exports.registerUser = async (req, res, next) => {
     next();
     return;
 };
+
+exports.industries = (req, res) => {
+    res.render('admin/industries', {
+        title: 'TRBC'
+    })
+}

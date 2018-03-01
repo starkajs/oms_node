@@ -16,4 +16,6 @@ router.post('/register',
 router.get('/user/:id', adminController.user);
 router.post('/edit_user/:id', adminController.editUser);
 
+router.get('/industries', adminController.industries);
+
 module.exports = router;
