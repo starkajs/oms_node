@@ -74,4 +74,30 @@ router.post('/add_metric', async (req, res) => {
         })
 })
 
+router.post('/add_requirement', (req, res) => {
+    const s = new sql.sqlServer();
+    if (req.body.industry) {
+        let industry = `'${req.body.industry}'`;
+    } else {
+        industry = 'NULL';
+    }
+    if (req.body.module) {
+        let ss_module = `'${req.body.module}'`;
+    } else {
+        ss_module = 'NULL'
+    }
+    let sqlQuery = `INSERT INTO ea_solution_requirement (process_id, industry_group_id, sub_module_id, requirement, example, is_valid)
+                    VALUES (${req.body.process}, ${industry}, ${ss_module}, '${req.body.requirement}', '${req.body.example}', 1)`
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            req.flash('success', 'Requirement added');
+            res.redirect('/entarch/requirements')
+        })
+        .fail((err) => {
+            req.flash('danger', err['message']);
+            res.redirect('/entarch/requirements')
+        })
+})
+
+
 module.exports = router;

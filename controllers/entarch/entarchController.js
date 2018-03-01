@@ -119,6 +119,58 @@ exports.editMetric = async (req, res) => {
         })
 }
 
-exports.requirements = (req, res) => {
-    res.render('entarch/requirements', {title: 'Standard Solution Requirements'})
+exports.requirements = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT id, process, order_column FROM vw_ea_process ORDER BY order_column`;
+    let processes = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT * FROM trbc WHERE classification_type = 'Industry Group' ORDER BY id`;
+    let industries = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT * FROM vw_ss_module WHERE sub_module_name is not null ORDER BY module_name, sub_module_name`;
+    let modules = await s.tpQuery(sqlQuery);
+    res.render('entarch/requirements', {
+        title: 'Standard Solution Requirements', processes, industries, modules
+})
+}
+
+exports.requirement = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM vw_ea_solution_requirement WHERE id = ${req.params.rid}`;
+    let requirement = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT id, process, order_column FROM vw_ea_process ORDER BY order_column`;
+    let processes = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT * FROM trbc WHERE classification_type = 'Industry Group' ORDER BY id`;
+    let industries = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT * FROM vw_ss_module WHERE sub_module_name is not null ORDER BY module_name, sub_module_name`;
+    let modules = await s.tpQuery(sqlQuery);
+    res.render('entarch/requirement', {
+        title: 'Standard Solution Requirement, requirement', requirement: requirement[0], processes, industries, modules
+    })
+}
+
+exports.editRequirement = async (req, res) => {
+    const s = new sql.sqlServer();
+    let industry = '';
+    let ss_module = '';
+    if (req.body.industry) {
+        industry = `'${req.body.industry}'`;
+    } else {
+        industry = 'NULL';
+    }
+    if (req.body.module) {
+        ss_module = `'${req.body.module}'`;
+    } else {
+        ss_module = 'NULL'
+    }
+    let sqlQuery = `UPDATE ea_solution_requirement SET process_id = ${req.body.process}, industry_group_id = ${industry},
+                    sub_module_id = ${ss_module}, requirement = '${req.body.requirement}', example = '${req.body.example}'
+                    WHERE id = ${req.params.rid}`
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            req.flash('success', 'Requirement updated');
+            res.redirect(`/entarch/requirement/${req.params.rid}`)
+        })
+        .fail((err) => {
+            req.flash('danger', err['message']);
+            res.redirect(`/entarch/requirement/${req.params.rid}`)
+        })
 }

@@ -5,7 +5,48 @@ block content
         .row.col-sm-10.col-sm-offset-1
             h1 Standard Solution Requirements
         .row.col-sm-10.col-sm-offset-1
+            button(data-toggle="modal", data-target="#addRequirement").btn.btn-primary Add Requirement
+        .row.col-sm-10.col-sm-offset-1
             table#table.table.table-striped.table-condensed
+    div(role="dialog")#addRequirement.modal.fade
+        div.modal-dialog.modal-lg
+            div.modal-content
+                div.modal-header
+                    button(type="button", data-dismiss="modal").close &times;
+                    h4.modal-title Add Requirement
+                div.modal-body
+                    form(action="/api/entarch/add_requirement", method="post").form-horizontal
+                        div.form-group
+                            label(for="process").control-label.col-sm-2 Process
+                            div.col-sm-10
+                                select(name="process", data-width="100%", title="Select a process", data-live-search="true").selectpicker
+                                    each ea_process in processes
+                                        option(value=ea_process.id) #{ea_process.process}
+                        div.form-group
+                            label(for="industry").control-label.col-sm-2 Industry
+                            div.col-sm-10
+                                select(name="industry", data-width="100%", title="Select an industry", data-live-search="true").selectpicker
+                                    each industry in industries
+                                        option(value=industry.id) #{industry.id} - #{industry.classification_name}
+                        div.form-group
+                            label(for="module").control-label.col-sm-2 Module
+                            div.col-sm-10
+                                select(name="module", data-width="100%", title="Select a module", data-live-search="true").selectpicker
+                                    each ss_module in modules
+                                        option(value=ss_module.id) #{ss_module.module_name} | #{ss_module.sub_module_name}
+                        div.form-group
+                            label(for="requirement").control-label.col-sm-2 Requirement
+                            div.col-sm-10
+                                textarea(name="requirement", rows="3").form-control
+                        div.form-group
+                            label(for="example").control-label.col-sm-2 Example
+                            div.col-sm-10
+                                textarea(name="example", rows="3").form-control
+                        div.form-group
+                            div.col-sm-10.col-sm-offset-2
+                                button(type="submit").btn.btn-primary Save
+                div.modal-footer
+                    button(type="button", data-dismiss="modal").btn.btn-default Close
 
 block scripts
     <!-- BOOTSTRAP TABLE -->

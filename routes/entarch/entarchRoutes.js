@@ -15,5 +15,8 @@ router.get('/metric/:mid', entarchController.metric);
 router.post('/metric/:mid', entarchController.editMetric);
 
 router.get('/requirements', entarchController.requirements);
+router.get('/requirement/:rid', entarchController.requirement);
+router.post('/requirement/:rid', entarchController.editRequirement);
+
 
 module.exports = router;

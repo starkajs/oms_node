@@ -1,0 +1,36 @@
+mixin editRequirementForm()
+    div.panel.panel-default
+        div.panel-body
+            form.form-horizontal(action="/entarch/requirement/" + requirement.id, method="post")
+                h2 Edit Requirement
+                br
+                div.form-group
+                    label(for="process").control-label.col-sm-2 Process
+                    div.col-sm-10
+                        select(name="process", data-width="100%", title="Select a process", data-live-search="true").selectpicker
+                            each ea_process in processes
+                                option(value=ea_process.id, selected= requirement.process_id == ea_process.id) #{ea_process.process}
+                div.form-group
+                    label(for="industry").control-label.col-sm-2 Industry
+                    div.col-sm-10
+                        select(name="industry", data-width="100%", title="Select an industry", data-live-search="true").selectpicker
+                            option(value="") No Specific Industry
+                            each industry in industries
+                                option(value=industry.id, selected= requirement.industry_group_id == industry.id) #{industry.id} - #{industry.classification_name}
+                div.form-group
+                    label(for="module").control-label.col-sm-2 Module
+                    div.col-sm-10
+                        select(name="module", data-width="100%", title="Select a module", data-live-search="true").selectpicker
+                            each ss_module in modules
+                                option(value=ss_module.id, selected= requirement.sub_module_id == ss_module.id) #{ss_module.module_name} | #{ss_module.sub_module_name}
+                div.form-group
+                    label(for="requirement").control-label.col-sm-2 Requirement
+                    div.col-sm-10
+                        textarea(name="requirement", rows="3").form-control #{requirement.requirement}
+                div.form-group
+                    label(for="example").control-label.col-sm-2 Example
+                    div.col-sm-10
+                        textarea(name="example", rows="3").form-control #{requirement.example}
+                div.form-group
+                    div.col-sm-10.col-sm-offset-2
+                        button(type="submit").btn.btn-primary Save
