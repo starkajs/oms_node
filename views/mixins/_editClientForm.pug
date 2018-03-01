@@ -1,0 +1,28 @@
+mixin editClientForm()
+    div.panel.panel-default
+        div.panel-body
+            form.form-horizontal(action="/optimum/client/" + client.id, method="post")
+                h2 Edit Client - #{client.client_name}
+                br
+                div.form-group
+                    label(for="client_name").control-label.col-sm-2 Name
+                    div.col-sm-10
+                        input(type="text", placeholder="Name", name="client_name", value=client.client_name).form-control
+                div.form-group
+                    label(for="url").control-label.col-sm-2 Website
+                    div.col-sm-10
+                        input(type="url", placeholder="Website", name="url", value=client.url).form-control
+                div.form-group
+                    label(for="email").control-label.col-sm-2 Email
+                    div.col-sm-10
+                        input(type="email", placeholder="Email", name="email", value=client.email).form-control
+                div.form-group
+                    label(for="erp_id").control-label.col-sm-2 ERP ID
+                    div.col-sm-4
+                        input(type="text", placeholder="ERP ID", name="erp_id", value=client.erp_id).form-control
+                    label(for="crm_id").control-label.col-sm-2 CRM ID
+                    div.col-sm-4
+                        input(type="text", placeholder="CRM ID", name="crm_id", value=client.crm_id).form-control
+                div.form-group
+                    div.col-sm-10.col-sm-offset-2
+                        button(type="submit").btn.btn-primary Save

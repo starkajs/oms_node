@@ -1,0 +1,65 @@
+extends ../layout
+
+block content
+    .container-fluid
+        .row.col-sm-10.col-sm-offset-1
+            h1 Optimum Clients
+        .row.col-sm-10.col-sm-offset-1
+            button(data-toggle="modal", data-target="#addClient").btn.btn-primary Add Client
+        .row.col-sm-10.col-sm-offset-1
+            table#table.table.table-striped.table-condensed
+    div(role="dialog")#addClient.modal.fade
+        div.modal-dialog
+            div.modal-content
+                div.modal-header
+                    button(type="button", data-dismiss="modal").close &times;
+                    h4.modal-title Add Client
+                div.modal-body
+                    form(action="/api/optimum/add_client", method="post").form-horizontal
+                        div.form-group
+                            label(for="client_name").control-label.col-sm-2 Name
+                            div.col-sm-10
+                                input(type="text", placeholder="Name", name="client_name").form-control
+                        div.form-group
+                            label(for="url").control-label.col-sm-2 Website
+                            div.col-sm-10
+                                input(type="url", placeholder="Website", name="url").form-control
+                        div.form-group
+                            label(for="email").control-label.col-sm-2 Email
+                            div.col-sm-10
+                                input(type="email", placeholder="Email", name="email").form-control
+                        div.form-group
+                            label(for="erp_id").control-label.col-sm-2 ERP ID
+                            div.col-sm-4
+                                input(type="text", placeholder="ERP ID", name="erp_id").form-control
+                            label(for="crm_id").control-label.col-sm-2 CRM ID
+                            div.col-sm-4
+                                input(type="text", placeholder="CRM ID", name="crm_id").form-control
+                        div.form-group
+                            div.col-sm-10.col-sm-offset-2
+                                button(type="submit").btn.btn-primary Save
+                div.modal-footer
+                    button(type="button", data-dismiss="modal").btn.btn-default Close
+
+block scripts
+    <!-- BOOTSTRAP TABLE -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+
+    <!-- EXPORT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/export/bootstrap-table-export.min.js"></script>
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+    <!-- FILTER -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+    <!-- EDITABLE -->
+    <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+    <!-- ROLES.js -->
+    script(src="../javascript/optimum/clients.js")
