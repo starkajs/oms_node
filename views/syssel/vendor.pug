@@ -1,0 +1,85 @@
+extends ../layout
+include ../mixins/_editVendorForm
+
+block content
+    .container-fluid
+        .row
+            .col-sm-11.col-sm-offset-1
+                a(href="/syssel/vendors").btn.btn-primary All Vendors
+        br
+        .row
+            div.col-sm-7.col-sm-offset-1
+                +editVendorForm(vendor=vendor)
+            div.col-sm-3
+                div.panel-group
+                    div.panel.panel-primary
+                        div.panel-heading
+                            h4.panel-title
+                                a(data-toggle="collapse", href="#systemCollapse") Systems
+                        div#systemCollapse.panel-collapse.collapse
+                            div.panel-body
+                                button(id="populateSystems", onclick="populateSystemList()").btn.btn-danger Populate List
+                                hr
+                                select(id="systems", data-live-search="true", multiple="true", title="Select one or more systems", data-width="80%", data-actions-box="true").selectpicker
+                                span &emsp;
+                                button(onclick="addSystems()").btn.btn-info
+                                    span.glyphicon.glyphicon-plus
+                                table#systemsTable.table.table-striped.table-condensed
+                div.panel-group
+                    div.panel.panel-primary
+                        div.panel-heading
+                            h4.panel-title
+                                a(data-toggle="collapse", href="#industryCollapse") Industries
+                        div#industryCollapse.panel-collapse.collapse
+                            div.panel-body
+                                select(id="industries", data-live-search="true", multiple="true", title="Select one or more industries", data-width="80%", data-actions-box="true").selectpicker
+                                    each industry in industries
+                                        option(value=industry.id) #{industry.classification_name}
+                                span &emsp;
+                                button(onclick="addIndustries()").btn.btn-info
+                                    span.glyphicon.glyphicon-plus
+                                table#industriesTable.table.table-striped.table-condensed
+                div.panel-group
+                    div.panel.panel-primary
+                        div.panel-heading
+                            h4.panel-title
+                                a(data-toggle="collapse", href="#locationCollapse") Locations
+                        div#locationCollapse.panel-collapse.collapse
+                            div.panel-body
+                                p
+                                    select(id="country" data-live-search="true", title="Select a country", data-width="80%", data-actions-box="true").selectpicker
+                                        each country in countries
+                                            option(value=country.code) #{country.country_name}
+                                p
+                                    input(id="region", type="text", placeholder="region").form-control
+                                p
+                                    input(id="city", type="text", placeholder="city").form-control
+                                span &emsp;
+                                button(onclick="addLocation()").btn.btn-info
+                                    span.glyphicon.glyphicon-plus
+                                table#locationsTable.table.table-striped.table-condensed
+
+
+block scripts
+    <!-- BOOTSTRAP TABLE -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+
+    <!-- EXPORT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/export/bootstrap-table-export.min.js"></script>
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+
+    <!-- FILTER -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+    <!-- EDITABLE -->
+    <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+    <!-- SYSTEM ELEMENTS.js -->
+    script(src="../../javascript/syssel/vendor.js")

@@ -30,7 +30,10 @@ router.post('/system/:id', sysselController.editSystem);
 
 
 // VENDORS
-
+router.get('/vendors', sysselController.vendors);
+router.get('/delete_vendor/:id', sysselController.deleteVendor);
+router.get('/vendor/:id', sysselController.viewVendor);
+router.post('/vendor/:id', sysselController.editVendor);
 
 
 

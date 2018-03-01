@@ -137,4 +137,48 @@ router.get('/system_modules/:id', sysselController.systemModules);
 router.post('/add_system_modules/:id', sysselController.addSystemModules);
 router.get('/delete_system_modules/:sid/:vid', sysselController.deleteSystemModules);
 
+// VENDORS
+router.get('/vendors', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `select *, (SELECT COUNT(1) FROM ss_system_vendor AS bb WHERE bb.vendor_id = aa.id) as system_count
+                    from ss_vendor as aa
+                    ORDER BY vendor_name;`
+    let data = await s.tpQuery(sqlQuery);
+    res.json(data);
+})
+
+router.post('/add_vendor', sysselController.addVendor);
+router.post('/vendors_systems', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT *,
+                    (
+                        SELECT COUNT(1)
+                        FROM ss_system_vendor AS bb
+                        WHERE bb.vendor_id = aa.id
+                    ) AS system_count
+                    FROM ss_vendor AS aa
+                    WHERE aa.id IN
+                    (
+                        SELECT vendor_id
+                        FROM ss_system_vendor AS a
+                            LEFT JOIN ss_system AS b ON a.system_id = b.id
+                        WHERE b.system_name LIKE '${req.body.search}'
+                    )
+                    ORDER BY vendor_name;`
+    let data = await s.tpQuery(sqlQuery);
+    res.json(data);
+})
+router.get('/vendor_systems/:id', sysselController.vendorSystems);
+router.post('/add_vendor_systems/:id', sysselController.addVendorSystems);
+router.get('/delete_vendor_systems/:sid/:vid', sysselController.deleteVendorSystems);
+router.get('/vendor_systems_list/:vid', sysselController.getVendorSystemsList);
+
+router.get('/vendor_industries/:id', sysselController.vendorIndustries);
+router.post('/add_vendor_industries/:id', sysselController.addVendorIndustries);
+router.get('/delete_vendor_industries/:iid/:vid', sysselController.deleteVendorIndustries);
+
+router.get('/vendor_locations/:id', sysselController.vendorLocations);
+router.post('/add_vendor_location/:id', sysselController.addVendorLocation);
+router.get('/delete_vendor_locations/:lid/:vid', sysselController.deleteVendorLocations);
+
 module.exports = router;

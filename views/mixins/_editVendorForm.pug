@@ -1,0 +1,73 @@
+mixin editVendorForm()
+    div.panel.panel-default
+        div.panel-body
+            form.form-horizontal(action="/syssel/vendor/" + vendor.id, method="post")
+                h2 Edit Vendor - #{vendor.vendor_name}
+                br
+                div.form-group
+                    label.control-label.col-sm-2(for="id") ID
+                    div.col-sm-10
+                        input(type="text", placeholder="ID", name="id", required="true", value=vendor.id, disabled="true").form-control
+                div.form-group
+                    label.control-label.col-sm-2(for="vendor_name") Vendor Name
+                    div.col-sm-2
+                        input(type="text", autofocus=true, placeholder="Vendor Name", name="vendor_name", required="true" value=vendor.vendor_name).form-control
+                    label.control-label.col-sm-2(for="vendor_url") Website
+                    div.col-sm-2
+                        input(type="url", placeholder="Vendor URL", name="vendor_url", value=vendor.vendor_url).form-control
+                    label.control-label.col-sm-2(for="sales_email") Email
+                    div.col-sm-2
+                        input(type="email", placeholder="Sales Email", name="sales_email", value=vendor.sales_email).form-control
+                div.form-group
+                    label.control-label.col-sm-2(for="company_profile") Description
+                    div.col-sm-4
+                        textarea(name="company_profile", rows="5").form-control #{vendor.company_profile}
+                    label.control-label.col-sm-2(for="optimum_view") Optimum View
+                    div.col-sm-4
+                        textarea(name="optimum_view", rows="5").form-control #{vendor.optimum_view}
+                div.form-group
+                    label.control-label.col-sm-2(for="contact_name") Contact
+                    div.col-sm-4
+                        input(type="text", placeholder="Contact Name", name="contact_name", value=vendor.contact_name).form-control
+                    label.control-label.col-sm-2(for="contact_email") Email
+                    div.col-sm-4
+                        input(type="email", placeholder="Contact Email", name="contact_email", value=vendor.contact_email).form-control
+                div.form-group
+                    label.control-label.col-sm-2(for="support_247") 24/7 Support
+                    div.col-sm-2
+                        select(name="support_247", data-width="100%").selectpicker
+                            option(value=1, selected= vendor.support_247 == 1) Yes
+                            option(value=0, selected= vendor.support_247 == 0) No
+                    label.control-label.col-sm-2(for="support_locations") Locations
+                    div.col-sm-6
+                        textarea(name="support_locations", rows="4").form-control #{vendor.support_locations}
+                div.form-group
+                    label.control-label.col-sm-2(for="is_uk_based") UK Based
+                    div.col-sm-4
+                        select(name="is_uk_based", data-width="100%").selectpicker
+                            option(value="Yes", selected= vendor.is_uk_based == 'Yes') Yes
+                            option(value="No", selected= vendor.is_uk_based == 'No') No
+                    label.control-label.col-sm-2(for="is_eu_based") EU Based
+                    div.col-sm-4
+                        select(name="is_eu_based", data-width="100%").selectpicker
+                            option(value="Yes", selected= vendor.is_eu_based == 'Yes') Yes
+                            option(value="No", selected= vendor.is_eu_based == 'No') No
+                div.form-group
+                    label.control-label.col-sm-2(for="is_iso_9001") ISO9001
+                    div.col-sm-2
+                        select(name="is_iso_9001", data-width="100%").selectpicker
+                            option(value=1, selected= vendor.is_iso_9001 == 1) Yes
+                            option(value=0, selected= vendor.is_iso_9001 == 0) No
+                    label.control-label.col-sm-2(for="is_iso_27001") ISO27001
+                    div.col-sm-2
+                        select(name="is_iso_27001", data-width="100%").selectpicker
+                            option(value=1, selected= vendor.is_iso_27001 == 1) Yes
+                            option(value=0, selected= vendor.is_iso_27001 == 0) No
+                    label.control-label.col-sm-2(for="is_gdpr") GDPR
+                    div.col-sm-2
+                        select(name="is_gdpr", data-width="100%").selectpicker
+                            option(value=1, selected= vendor.is_gdpr == 1) Yes
+                            option(value=0, selected= vendor.is_gdpr == 0) No
+                div.form-group
+                    div.col-sm-10.col-sm-offset-2
+                        input.btn.btn-primary(type="submit", value="Save")

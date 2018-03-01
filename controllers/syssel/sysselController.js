@@ -383,7 +383,7 @@ exports.deleteSystemVendors = async (req, res) => {
     const s = new sql.sqlServer();
     let sqlQuery = `DELETE FROM ss_system_vendor WHERE system_id = '${req.params.sid}' AND vendor_id = '${req.params.vid}'`
     let done = await s.tpQuery(sqlQuery);
-    req.flash('success', 'Vendor removed');
+    req.flash('success', 'Vendor/System removed');
     res.redirect(`/syssel/system/${req.params.sid}`);
 }
 
@@ -480,4 +480,192 @@ exports.deleteSystemModules = async (req, res) => {
     let done = await s.tpQuery(sqlQuery);
     req.flash('success', 'Module removed');
     res.redirect(`/syssel/system/${req.params.sid}`);
+}
+
+
+// VENDORS
+
+exports.vendors = async (req, res) => {
+    res.render('syssel/vendors', {
+        title: 'Vendors'
+    });
+}
+
+exports.addVendor = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `INSERT INTO ss_vendor (vendor_name, vendor_url, company_profile)
+                    VALUES ('${req.body.vendor_name}', '${req.body.vendor_url}', '${req.body.company_profile}')`
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            req.flash('success', 'Vendor added');
+            res.redirect('/syssel/vendors');
+        })
+        .fail((err) => {
+            req.flash('danger', err['message']);
+            res.redirect('/syssel/vendors');
+        })
+}
+
+exports.deleteVendor = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `DELETE FROM ss_vendor WHERE id = '${req.params.id}'`;
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            req.flash('success', 'Vendor deleted');
+            res.redirect('/syssel/vendors');
+        })
+        .fail((err) => {
+            req.flash('danger', err['message']);
+            res.redirect('/syssel/vendors')
+        })
+}
+
+exports.viewVendor = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM ss_vendor WHERE id = '${req.params.id}'`
+    let vendor = await s.tpQuery(sqlQuery);
+    vendor = vendor[0]
+    // countries
+    sqlQuery = `SELECT * FROM country ORDER BY country_name`
+    let countries = await s.tpQuery(sqlQuery);
+    // industries
+    sqlQuery = `select *
+                from trbc
+                where classification_type = 'Industry Group'
+                and id not in (
+                    select industry_id
+                    from ss_vendor_industry
+                    where vendor_id = '${req.params.id}'
+                ) ORDER BY classification_name;`
+    let industries = await s.tpQuery(sqlQuery);
+    // locations
+    sqlQuery = `SELECT * FROM ss_vendor_location WHERE vendor_id = '${req.params.id}' ORDER BY country_code, region, city`
+    let locations = await s.tpQuery(sqlQuery)
+    res.render('syssel/vendor', {
+        title: 'Vendor', vendor, industries, locations, countries
+    })
+}
+
+exports.getVendorSystemsList = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `select *
+                from ss_system
+                WHERE id not in (
+                    select system_id
+                    from ss_system_vendor
+                    where vendor_id = '${req.params.vid}'
+                ) ORDER BY system_name;`
+    let systems = await s.tpQuery(sqlQuery);
+    res.json(systems);
+}
+
+exports.vendorSystems = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `select *
+                    from ss_system_vendor as a
+                    left join ss_system as b on a.system_id = b.id
+                    where a.vendor_id = '${req.params.id}' ORDER BY b.system_name`
+    let systems = await s.tpQuery(sqlQuery);
+    res.json(systems);
+}
+
+exports.addVendorSystems = async (req, res) => {
+    const s = new sql.sqlServer();
+    let vendor_id = req.params.id;
+    let systems = req.body.systems;
+    let sqlQuery = '';
+    for (system in systems) {
+        sqlQuery = `INSERT INTO ss_system_vendor (vendor_id, system_id)
+                    VALUES ('${vendor_id}', '${systems[system]}')`
+        let done = await s.tpQuery(sqlQuery);
+    }
+    res.json({message: 'updated'})
+}
+
+exports.deleteVendorSystems = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `DELETE FROM ss_system_vendor WHERE system_id = '${req.params.sid}' AND vendor_id = '${req.params.vid}'`
+    let done = await s.tpQuery(sqlQuery);
+    req.flash('success', 'Vendor/System removed');
+    res.redirect(`/syssel/vendor/${req.params.vid}`);
+}
+
+exports.vendorIndustries = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `select *
+                    from ss_vendor_industry as a
+                    left join trbc as b on a.industry_id = b.id
+                    where a.vendor_id = '${req.params.id}' ORDER BY b.classification_name`
+    let industries = await s.tpQuery(sqlQuery);
+    res.json(industries);
+}
+
+exports.addVendorIndustries = async (req, res) => {
+    const s = new sql.sqlServer();
+    let vendor_id = req.params.id;
+    let industries = req.body.industries;
+    let sqlQuery = '';
+    for (industry in industries) {
+        sqlQuery = `INSERT INTO ss_vendor_industry (vendor_id, industry_id)
+                    VALUES ('${vendor_id}', '${industries[industry]}')`
+        let done = await s.tpQuery(sqlQuery);
+    }
+    res.json({message: 'updated'})
+}
+
+exports.deleteVendorIndustries = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `DELETE FROM ss_vendor_industry WHERE vendor_id = '${req.params.vid}' AND industry_id = '${req.params.iid}'`
+    let done = await s.tpQuery(sqlQuery);
+    req.flash('success', 'Vendor/Industry removed');
+    res.redirect(`/syssel/vendor/${req.params.vid}`);
+}
+
+exports.vendorLocations = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `select a.id as location_id, a.country_code + ' | ' + a.region + ' | ' + a.city as location_description
+                    from ss_vendor_location as a
+                    where a.vendor_id = '${req.params.id}' ORDER BY a.country_code, a.region, a.city`
+    let locations = await s.tpQuery(sqlQuery);
+    res.json(locations);
+}
+
+exports.addVendorLocation = async (req, res) => {
+    const s = new sql.sqlServer();
+    let vendor_id = req.params.id;
+    let sqlQuery = `INSERT INTO ss_vendor_location (vendor_id, country_code, region, city)
+                VALUES ('${vendor_id}', '${req.body.country}', '${req.body.region}', '${req.body.city}')`
+    let done = await s.tpQuery(sqlQuery);
+    res.json({message: 'updated'})
+}
+
+exports.deleteVendorLocations = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `DELETE FROM ss_vendor_location WHERE vendor_id = '${req.params.vid}' AND id = '${req.params.lid}'`
+    let done = await s.tpQuery(sqlQuery);
+    req.flash('success', 'Vendor/Location removed');
+    res.redirect(`/syssel/vendor/${req.params.vid}`);
+}
+
+
+exports.editVendor = (req, res) => {
+    const s = new sql.sqlServer();
+    vendor_id = req.params.id;
+    let sqlQuery = `UPDATE ss_vendor SET vendor_name = '${req.body.vendor_name}',
+                    vendor_url = '${req.body.vendor_url}', sales_email = '${req.body.sales_email}',
+                    company_profile = '${req.body.company_profile}', optimum_view = '${req.body.optimum_view}',
+                    contact_name = '${req.body.contact_name}', contact_email = '${req.body.contact_email}',
+                    support_247 = ${req.body.support_247}, support_locations = '${req.body.support_locations}',
+                    is_uk_based = '${req.body.is_uk_based}', is_eu_based = '${req.body.is_eu_based}',
+                    is_iso_9001 = ${req.body.is_iso_9001}, is_iso_27001 = ${req.body.is_iso_27001}, is_gdpr = ${req.body.is_gdpr}
+                    WHERE id = '${vendor_id}'`
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            req.flash('success', 'Vendor updated');
+            res.redirect(`/syssel/vendor/${req.params.id}`)
+        })
+        .fail((err) => {
+            req.flash('danger', err['message']);
+            res.redirect(`/syssel/vendor/${req.params.id}`)
+        })
 }
