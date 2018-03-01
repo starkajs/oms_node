@@ -37,4 +37,18 @@ router.get('/process_requirements/:pid', async (req, res) => {
     res.json(requirements);
 })
 
+router.get('/metrics', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT b.short_code+' | '+ b.process_name AS process,
+                            c.driver_name,
+                            a.*
+                    FROM ea_metric AS a
+                    LEFT JOIN ea_process AS b ON a.process_id = b.id
+                    LEFT JOIN ea_value_driver AS c ON a.value_driver_id = c.id
+                    ORDER BY a.metric_category, a.metric_name
+                    ;`
+    let metrics = await s.tpQuery(sqlQuery);
+    res.json(metrics);
+})
+
 module.exports = router;

@@ -1,0 +1,39 @@
+mixin editMetricForm()
+    div.panel.panel-default
+        div.panel-body
+            form.form-horizontal(action="/entarch/metric/" + metric.id, method="post")
+                h2 Edit Metric - #{metric.metric_name}
+                br
+                div.form-group
+                    label.control-label.col-sm-2(for="value_driver") Value Driver
+                    div.col-sm-4
+                        select(name="value_driver", data-width="100%", title="Select a value driver").selectpicker
+                            each driver in drivers
+                                option(value=driver.id, selected= metric.value_driver_id == driver.id) #{driver.driver_name}
+                    label.control-label.col-sm-2(for="metric_category") Category
+                    div.col-sm-4
+                        select(name="metric_category", data-width="100%").selectpicker
+                            each category in categories
+                                option(value=category.metric_category, selected= metric.metric_category == category.metric_category) #{category.metric_category}
+                div.form-group
+                    label.control-label.col-sm-2(for="metric_name") Metric Name
+                    div.col-sm-6
+                        input(type="text", autofocus=true, placeholder="Metric Name", name="metric_name", required="true" value=metric.metric_name).form-control
+                    label.control-label.col-sm-2(for="kpi") KPI
+                    div.col-sm-2
+                        select(name="kpi", data-width="100%").selectpicker
+                            option(value=1, selected= metric.is_key_performance_indicator == 1) Yes
+                            option(value=0, selected= metric.is_key_performance_indicator == 0) No
+                div.form-group
+                    label.control-label.col-sm-2(for="formula") Formula
+                    div.col-sm-10
+                        textarea(name="formula").form-control #{metric.formula}
+                div.form-group
+                    label.control-label.col-sm-2(for="process") Process
+                    div.col-sm-10
+                        select(name="process", data-width="100%", data-live-search="true", title="Select a process").selectpicker
+                            each ea_process in processes
+                                option(value=ea_process.id, selected= metric.process_id == ea_process.id) #{ea_process.process}
+                div.form-group
+                    div.col-sm-10.col-sm-offset-2
+                        input.btn.btn-primary(type="submit", value="Save")

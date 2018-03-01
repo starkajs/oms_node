@@ -71,3 +71,39 @@ exports.editProcess = (req, res) => {
             res.redirect(`/entarch/process/${req.params.pid}`)
         })
 }
+
+exports.metrics = (req, res) => {
+    res.render('entarch/metrics', {title: 'Metrics'})
+}
+
+exports.metric = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM ea_metric WHERE id = ${req.params.mid}`
+    let metric = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT DISTINCT metric_category FROM ea_metric ORDER BY metric_category`;
+    let categories = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT * FROM vw_ea_process ORDER BY order_column`;
+    let processes = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT * FROM ea_value_driver ORDER BY driver_name`;
+    let drivers = await s.tpQuery(sqlQuery);
+    res.render('entarch/metric', {
+        title: 'Metric', metric: metric[0], categories, processes, drivers
+    })
+}
+
+exports.editMetric = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `UPDATE ea_metric SET value_driver_id = '${req.body.value_driver}',
+                    metric_category = '${req.body.metric_category}', metric_name = '${req.body.metric_name}',
+                    formula = '${req.body.formula}', process_id = ${req.body.process || 'NULL'}, is_key_performance_indicator = ${req.body.kpi}
+                    WHERE id = ${req.params.mid}`
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            req.flash('success', 'Metric updated');
+            res.redirect(`/entarch/metric/${req.params.mid}`);
+        })
+        .fail((err) => {
+            req.flash('danger', err['message']);
+            res.redirect(`/entarch/metric/${req.params.mid}`);
+        })
+}
