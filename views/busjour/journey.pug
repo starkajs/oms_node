@@ -1,0 +1,78 @@
+extends ../layout
+
+block content
+    .container-fluid
+        .row
+            .col-sm-10.col-sm-offset-1
+                h2 #{journey.journey_name}
+                    small &emsp;#{journey.client_name}
+        .row
+            .col-sm-10.col-sm-offset-1
+                a(href="/journey/journeys").btn.btn-primary All Journeys
+        br
+        .row
+            .col-sm-3.col-sm-offset-1
+                div.panel.panel-default
+                    div.panel-body
+                        h4 Projects
+                        a(href="/journey/" + journey.id + "/projects").btn.btn-primary View Projects
+                        table#projectsTable.table.table-striped.table-condensed
+            .col-sm-3
+                div.panel.panel-default
+                    div.panel-body
+                        h4 Capabilities
+                        a(href="/journey/" + journey.id + "/capabilities").btn.btn-primary View Capabilities
+                        table#capabilitiesTable.table.table-striped.table-condensed
+            .col-sm-3
+                div.panel.panel-default
+                    div.panel-body
+                        h4 Solutions
+                        a(href="/journey/" + journey.id + "/solutions").btn.btn-primary View Solutions
+                        table#solutionsTable.table.table-striped.table-condensed
+        .row
+            .col-sm-3.col-sm-offset-1
+                div.panel.panel-default
+                    div.panel-body
+                        h4 Requirements
+                        a(href="/journey/" + journey.id + "/requirements").btn.btn-primary View Requirements
+                        table#requirementsTable.table.table-striped.table-condensed
+            .col-sm-3
+                div.panel.panel-default
+                    div.panel-body
+                        h4 Scenarios
+                        a(href="/journey/" + journey.id + "/scenarios").btn.btn-primary View Scenarios
+                        table#scenariosTable.table.table-striped.table-condensed
+            .col-sm-3
+                div.panel.panel-default
+                    div.panel-body
+                        h4 Vendors
+                        a(href="/journey/" + journey.id + "/vendors").btn.btn-primary View Vendors
+                        table#vendorsTable.table.table-striped.table-condensed
+
+block scripts
+    <!-- BOOTSTRAP TABLE -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+
+    <!-- EXPORT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/export/bootstrap-table-export.min.js"></script>
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+    <!-- FILTER -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+    <!-- EDITABLE -->
+    <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+    <!-- PROJECTS.js -->
+    script(src="../../javascript/busjour/journeyProjects.js")
+    script(src="../../javascript/busjour/journeyCapabilities.js")
+    script(src="../../javascript/busjour/journeySolutions.js")
+    script(src="../../javascript/busjour/journeyRequirements.js")
+    script(src="../../javascript/busjour/journeyScenarios.js")
+    script(src="../../javascript/busjour/journeyVendors.js")

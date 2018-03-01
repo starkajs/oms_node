@@ -25,6 +25,8 @@ const entarchRoutes = require('./routes/entarch/entarchRoutes');
 const entarchApiRoutes = require('./routes/entarch/api');
 const optimumRoutes = require('./routes/optimum/optimumRoutes');
 const optimumApiRoutes = require('./routes/optimum/api');
+const journeyRoutes = require('./routes/busjour/journeyRoutes');
+const journeyApiRoutes = require('./routes/busjour/api');
 
 // create the Express app
 const app = express();
@@ -95,6 +97,8 @@ app.use('/entarch', entarchRoutes);
 app.use('/api/entarch', entarchApiRoutes);
 app.use('/optimum', optimumRoutes);
 app.use('/api/optimum', optimumApiRoutes);
+app.use('/journey', journeyRoutes);
+app.use('/api/journey', journeyApiRoutes);
 
 
 // If above routes don't work, 404 and forward to error handler
