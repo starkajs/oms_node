@@ -139,4 +139,81 @@ router.post('/add_journey_vendors/:jid', async (req, res) => {
     res.json({message: 'Added vendors'})
 })
 
+router.get('/processes', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM vw_ea_process ORDER BY order_column`
+    let data = await s.tpQuery(sqlQuery);
+    res.json(data);
+})
+
+router.get('/features', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM ss_feature ORDER BY feature_name`
+    let data = await s.tpQuery(sqlQuery);
+    res.json(data);
+})
+
+router.get('/modules', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM vw_ss_module WHERE sub_module_name is not null ORDER BY module_name, sub_module_name`
+    let data = await s.tpQuery(sqlQuery);
+    res.json(data);
+})
+
+router.get('/moscow', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM moscow ORDER BY moscow`
+    let moscow = await s.tpQuery(sqlQuery);
+    res.json(moscow);
+})
+
+router.post('/add_journey_requirements/:jid', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = ''
+    for (requirement in req.body.requirements) {
+        sqlQuery = `insert into bj_solution_requirement (journey_id, requirement_id, process_id, sub_module_id, requirement)
+                    select ${req.params.jid}, id, process_id, sub_module_id, requirement
+                    from ea_solution_requirement where id = ${req.body.requirements[requirement]}`
+        await s.tpQuery(sqlQuery)
+    };
+    res.json({message: 'Update complete'})
+})
+
+router.post('/add_requirement/:jid', async (req, res) => {
+    if (req.body.module) {
+        let ss_module = `'${req.body.module}'`;
+    } else {
+        ss_module = 'NULL'
+    }
+    const s = new sql.sqlServer();
+    let sqlQuery = `INSERT INTO bj_solution_requirement (journey_id, process_id, requirement, moscow, sub_module_id, example)
+                    VALUES (${req.params.jid}, ${req.body.process}, '${req.body.requirement}', '1 - Must Have', ${ss_module},
+                    '${req.body.example}')`
+    console.log(sqlQuery);
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            req.flash('success', 'Added requirement');
+            res.redirect(`/journey/journey_requirements/${req.params.jid}`)
+        })
+        .fail((err) => {
+            req.flash('danger', err['message']);
+            res.redirect(`/journey/journey_requirements/${req.params.jid}`)
+        })
+})
+
+router.post('/create_standard', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `insert into ea_solution_requirement (process_id, sub_module_id, requirement)
+                    output inserted.id
+                    select process_id, sub_module_id, requirement
+                    from bj_solution_requirement
+                    where journey_id = ${req.body.journey}
+                    and id = ${req.body.requirement}`
+    let new_id = await s.tpQuery(sqlQuery);
+    sqlQuery = `UPDATE bj_solution_requirement SET requirement_id = ${new_id[0]['id']}
+                WHERE journey_id = ${req.body.journey} AND id = ${req.body.requirement}`
+    await s.tpQuery(sqlQuery);
+    res.json({data: 'updated'});
+})
+
 module.exports = router;

@@ -1,0 +1,78 @@
+extends ../layout
+
+block content
+    .container-fluid
+        .row.col-sm-10.col-sm-offset-1
+            h1 #{journey.journey_name}
+                small &emsp;#{journey.client_name}
+        .row.col-sm-10.col-sm-offset-1
+            button(data-toggle="modal", data-target="#addRequirement").btn.btn-primary Add Requirement
+            span &emsp;
+            a(href="/journey/journey/" + journey.id).btn.btn-primary Journey
+            span &emsp;
+            a(href="/journey/journey_vendors_requirements/" + journey.id).btn.btn-primary Responses
+            span &emsp;
+            select(id="requirements", data-live-search="true", multiple="true", title="Select one or more STD requirements", data-width="50%").selectpicker
+                each requirement in requirements
+                    option(value=requirement.id) #{requirement.requirement} (#{requirement.module})
+            span &emsp;
+            button(onclick="addRequirements()").btn.btn-primary Add Requirements(s)
+        .row.col-sm-10.col-sm-offset-1
+            table#table.table.table-striped.table-condensed
+    div(role="dialog")#addRequirement.modal.fade
+        div.modal-dialog.modal-lg
+            div.modal-content
+                div.modal-header
+                    button(type="button", data-dismiss="modal").close &times;
+                    h4.modal-title Add Requirement
+                div.modal-body
+                    form(action="/api/journey/add_requirement/" + journey.id, method="post").form-horizontal
+                        div.form-group
+                            label(for="process").control-label.col-sm-2 Process
+                            div.col-sm-10
+                                select(name="process", data-width="100%", title="Select a process", data-live-search="true").selectpicker
+                                    each ea_process in processes
+                                        option(value=ea_process.id) #{ea_process.process}
+                        div.form-group
+                            label(for="module").control-label.col-sm-2 Module
+                            div.col-sm-10
+                                select(name="module", data-width="100%", title="Select a module", data-live-search="true").selectpicker
+                                    each ss_module in modules
+                                        option(value=ss_module.id) #{ss_module.module_name} | #{ss_module.sub_module_name}
+                        div.form-group
+                            label(for="requirement").control-label.col-sm-2 Requirement
+                            div.col-sm-10
+                                textarea(name="requirement", rows="3").form-control
+                        div.form-group
+                            label(for="example").control-label.col-sm-2 Example
+                            div.col-sm-10
+                                textarea(name="example", rows="3").form-control
+                        div.form-group
+                            div.col-sm-10.col-sm-offset-2
+                                button(type="submit").btn.btn-primary Save
+                div.modal-footer
+                    button(type="button", data-dismiss="modal").btn.btn-default Close
+
+
+block scripts
+    <!-- BOOTSTRAP TABLE -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+
+    <!-- EXPORT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/export/bootstrap-table-export.min.js"></script>
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+    <!-- FILTER -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+    <!-- EDITABLE -->
+    <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+    <!-- ROLES.js -->
+    script(src="../../javascript/busjour/requirements.js")

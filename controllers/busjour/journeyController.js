@@ -40,3 +40,20 @@ exports.journeyVendorsScore = async (req, res) => {
         title: 'Journey Vendors', journey: journey[0]
     })
 }
+
+exports.requirements = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM vw_bj_journey WHERE id = ${req.params.jid}`
+    let journey = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT *
+                FROM vw_ea_solution_requirement
+                WHERE id not in (SELECT distinct requirement_id FROM bj_solution_requirement WHERE journey_id = ${req.params.jid} and requirement_id is not null)`
+    let requirements = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT id, process, order_column FROM vw_ea_process ORDER BY order_column`;
+    let processes = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT * FROM vw_ss_module WHERE sub_module_name is not null ORDER BY module_name, sub_module_name`;
+    let modules = await s.tpQuery(sqlQuery);
+    res.render('busjour/requirements', {
+        title: 'Journey Requirements', journey: journey[0], requirements, processes, modules
+    })
+}
