@@ -4,7 +4,6 @@ const sql = require('../../services/tedious');
 const path = require('path');
 const formidable = require('formidable');
 const fs = require('fs');
-const d3 = require('d3');
 const csv = require('csvtojson');
 
 
