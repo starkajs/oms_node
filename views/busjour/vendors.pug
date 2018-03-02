@@ -1,0 +1,43 @@
+extends ../layout
+
+block content
+    .container-fluid
+        .row.col-sm-10.col-sm-offset-1
+            h1 #{journey.journey_name}
+                small &emsp;#{journey.client_name}
+        .row.col-sm-10.col-sm-offset-1
+            a(href="/journey/journey/" + journey.id).btn.btn-primary Journey
+            span &emsp;
+            a(href="/journey/journey_vendors_score/" + journey.id).btn.btn-primary Scoring
+            span &emsp;
+            select(id="vendors", data-live-search="true", multiple="true", title="Select one or more vendors").selectpicker
+                each vendor in vendors
+                    option(value=vendor.id) #{vendor.vendor_name}
+            span &emsp;
+            button(onclick="addVendors()").btn.btn-primary Add Vendor(s)
+        .row.col-sm-10.col-sm-offset-1
+            table#table.table.table-striped.table-condensed
+
+
+block scripts
+    <!-- BOOTSTRAP TABLE -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+
+    <!-- EXPORT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/export/bootstrap-table-export.min.js"></script>
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+    <!-- FILTER -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+    <!-- EDITABLE -->
+    <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+    <!-- ROLES.js -->
+    script(src="../../javascript/busjour/vendors.js")

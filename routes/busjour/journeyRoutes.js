@@ -6,4 +6,8 @@ const journeyController = require('../../controllers/busjour/journeyController')
 router.get('/journeys', journeyController.journeys);
 router.get('/journey/:jid', journeyController.journey);
 
+router.get('/journey_vendors/:jid', journeyController.vendors);
+router.get('/journey_vendors_score/:jid', journeyController.journeyVendorsScore);
+// router.get('/journey_vendor/:jid/:vid', journeyController.journeyVendor);
+
 module.exports = router;

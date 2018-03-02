@@ -20,3 +20,23 @@ exports.journey = async (req, res) => {
         title: 'Business Journey', journey: journey[0], projects
     })
 }
+
+exports.vendors = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM vw_bj_journey WHERE id = ${req.params.jid}`
+    let journey = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT * FROM ss_vendor WHERE id not in (SELECT vendor_id FROM bj_vendor WHERE journey_id = ${req.params.jid}) ORDER BY vendor_name`
+    let vendors = await s.tpQuery(sqlQuery);
+    res.render('busjour/vendors', {
+        title: 'Journey Vendors', journey: journey[0], vendors
+    })
+}
+
+exports.journeyVendorsScore = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM vw_bj_journey WHERE id = ${req.params.jid}`
+    let journey = await s.tpQuery(sqlQuery);
+    res.render('busjour/journey_vendors_score', {
+        title: 'Journey Vendors', journey: journey[0]
+    })
+}

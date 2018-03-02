@@ -79,13 +79,64 @@ router.get('/journey_scenarios/:jid', async (req, res) => {
 
 router.get('/journey_vendors/:jid', async (req, res) => {
     const s = new sql.sqlServer();
-    let sqlQuery = `select b.vendor_name, c.status_name, a.*
-                    from bj_vendor as a
-                    left join ss_vendor as b on a.vendor_id = b.id
-                    left join bj_vendor_status as c on a.status_id = c.id
-                    WHERE a.journey_id = ${req.params.jid} ORDER BY b.vendor_name`
+    let sqlQuery = `select *
+                    FROM vw_bj_vendor as a
+                    WHERE a.journey_id = ${req.params.jid} ORDER BY a.vendor_name`
     let vendors = await s.tpQuery(sqlQuery);
     res.json(vendors);
+})
+
+router.get('/journey_vendors_score/:jid', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `select *
+                    FROM vw_bj_vendor as a
+                    WHERE a.journey_id = ${req.params.jid}
+                    AND include_in_report = 'Yes'
+                    ORDER BY a.vendor_name`
+    let vendors = await s.tpQuery(sqlQuery);
+    res.json(vendors);
+})
+
+router.get('/vendor_status', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM bj_vendor_status ORDER BY status_order`;
+    let vendor_status = await s.tpQuery(sqlQuery);
+    res.json(vendor_status);
+})
+router.get('/vendor_reason', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM bj_vendor_reason ORDER BY reason_name`;
+    let vendor_reason = await s.tpQuery(sqlQuery);
+    res.json(vendor_reason);
+})
+
+router.post('/journey_vendor', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `UPDATE bj_vendor SET ${req.body.update_field} = '${req.body.update_value}'
+                    WHERE journey_id = ${req.body.journey_id} AND vendor_id = '${req.body.vendor_id}'`
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            res.json({
+                message: 'Update complete'
+            })
+        })
+        .fail((err) => {
+            console.log(err)
+            res.json({
+                error: err
+            })
+        })
+})
+
+router.post('/add_journey_vendors/:jid', async (req, res) => {
+    const s = new sql.sqlServer();
+    let vendors = req.body.vendors;
+    let sqlQuery = '';
+    for (vendor in vendors) {
+        sqlQuery = `INSERT INTO bj_vendor (journey_id, vendor_id) VALUES ('${req.params.jid}', '${vendors[vendor]}')`
+        await s.tpQuery(sqlQuery);
+    };
+    res.json({message: 'Added vendors'})
 })
 
 module.exports = router;
