@@ -216,4 +216,24 @@ router.post('/create_standard', async (req, res) => {
     res.json({data: 'updated'});
 })
 
+router.get('/requirements_responses/:jid', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery =`SELECT * FROM vw_bj_requirements_responses WHERE journey_id = ${req.params.jid}`
+    let data = await s.tpQuery(sqlQuery);
+    res.json(data);
+})
+
+router.post('/add_vendor_requirements/:jid', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = ''
+    for (vendor in req.body.vendors) {
+        sqlQuery = `insert into bj_solution_requirement_response (solution_requirement_id, vendor_id, journey_id, update_required)
+                    select id, '${req.body.vendors[vendor]}', ${req.params.jid}, 0
+                    from bj_solution_requirement
+                    where journey_id = ${req.params.jid}`
+        await s.tpQuery(sqlQuery)
+    }
+    res.json({message: 'Vendors added'})
+})
+
 module.exports = router;
