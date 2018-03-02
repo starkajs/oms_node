@@ -1,6 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const sql = require('../../services/tedious');
+const path = require('path');
+const formidable = require('formidable');
+const fs = require('fs');
+const d3 = require('d3');
+const csv = require('csvtojson');
+
 
 router.get('/journeys', async (req, res) => {
     const s = new sql.sqlServer();
@@ -235,5 +241,46 @@ router.post('/add_vendor_requirements/:jid', async (req, res) => {
     }
     res.json({message: 'Vendors added'})
 })
+
+router.post('/upload_responses/:jid', async (req, res) => {
+
+    let sqlQuery = '';
+    let form = new formidable.IncomingForm();
+    form.multiples = false;
+    let uploadPath = path.join(__dirname, '..', '..', 'public', 'uploads');
+    form.uploadDir = uploadPath;
+    let filePath = path.join(__dirname, '..', '..', 'public', 'uploads', 'responses.csv');
+    try {
+        fs.unlinkSync(filePath);
+    } catch (error) {
+        console.log("file doesn't exist: ", error);
+    }
+    form.on('file', function(field, file){
+        fs.rename(file.path, path.join(form.uploadDir, 'responses.csv'));
+    });
+    form.on('error', function(err){
+        console.log("Error: ", err);
+    });
+    form.on('end', function(){
+        csv()
+            .fromFile(filePath)
+
+            .on('end_parsed', async (data) => {
+                const s = new sql.sqlServer();
+                for (record in data) {
+                sqlQuery = `UPDATE bj_solution_requirement_response
+                            SET response_value = ${data[record]['Response']}, response_comment = '${data[record]['Comment']}'
+                            WHERE solution_requirement_id = ${data[record]['ID']} AND vendor_id = '${data[record]['Vendor ID']}'`
+                console.log("--- --- ---")
+                console.log(data[record['ID']]);
+                console.log(sqlQuery);
+                await s.tpQuery(sqlQuery)
+                }
+            })
+        req.flash('success', 'File uploaded and responses updated');
+        res.redirect(`/journey/requirements_responses/${req.params.jid}`);
+    })
+    form.parse(req);
+});
 
 module.exports = router;

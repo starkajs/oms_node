@@ -1,5 +1,6 @@
 const sql = require('../../services/tedious');
 
+
 exports.journeys = (req, res) => {
     res.render('busjour/journeys', {
         title: 'Business Journeys'

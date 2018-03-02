@@ -27,6 +27,20 @@ const populateTable = async function() {
             filterControl: 'input',
             sortable: true
         }, {
+            field: 'module',
+            title: 'Module',
+            filterControl: 'input',
+            formatter: moduleFormatter,
+            visible: false,
+            sortable: true
+        },{
+            field: 'process',
+            title: 'Process',
+            filterControl: 'input',
+            formatter: processFormatter,
+            visible: false,
+            sortable: true
+        },{
             field: 'requirement',
             title: 'Requirement',
             sortable: true,
@@ -65,11 +79,15 @@ const populateTable = async function() {
         }, {
             field: 'optimum_comment',
             title: 'Optimum',
-            filterControl: 'input'
+            filterControl: 'input',
+            editable: {
+                type: 'textarea'
+            }
         }, {
             field: 'update_required',
             title: 'Update Required',
             filterControl: 'input',
+            visible: false,
             sortable: true,
             editable: {
                 type: 'select',
@@ -80,6 +98,7 @@ const populateTable = async function() {
             title: 'Updated Response',
             filterControl: 'input',
             sortable: 'true',
+            visible: false,
             editable: {
                 type: 'select',
                 source: [{value: 5, text: '5 - Out of the box'}, {value: 4, text: '4 - Configuration'}, {value: 3, text: '3 - Small Mod'},
@@ -89,6 +108,7 @@ const populateTable = async function() {
             field: 'updated_response',
             title: 'Updated Comment',
             filterControl: 'input',
+            visible: false,
             editable: {
                 type: 'textarea'
             }
@@ -135,6 +155,14 @@ const keyFormatter = (value) => {
     } else {
         return 'Yes';
     }
+}
+
+const moduleFormatter = (value, row) => {
+    return `${row.module_name} | ${row.sub_module_name}`
+}
+
+const processFormatter = (value, row) => {
+    return `${row.short_code} - ${row.process_name}`
 }
 
 const addVendors = function() {

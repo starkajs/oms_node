@@ -13,8 +13,28 @@ block content
                     option(value=vendor.vendor_id) #{vendor.vendor_name} (#{vendor.status_name})
             span &emsp;
             button(onclick="addVendors()").btn.btn-primary Add Vendor
+            span &emsp;
+            button(data-toggle="modal", data-target="#uploadResponses").btn.btn-primary Upload Responses
         .row.col-sm-10.col-sm-offset-1
             table#table.table.table-striped.table-condensed
+    div(role="dialog")#uploadResponses.modal.fade
+        div.modal-dialog
+            div.modal-content
+                div.modal-header
+                    button(type="button", data-dismiss="modal").close &times;
+                    h4.modal-title Upload Responses
+                div.modal-body
+                    p Format must be CSV: Requirement ID | Vendor ID | Response Value | Response Comment
+                    form(action="/api/journey/upload_responses/" + journey.id, method="post", enctype="multipart/form-data")
+                        div.form-group
+                            label(for="upload_file").control-label.col-sm-3 Select a file
+                            div.col-sm-9
+                                input(type="file", name="upload_file", accept=".csv").form-control
+                        div.form-group
+                            div.col-sm-9.col-sm-offset-2
+                                button(type="submit").btn.btn-primary Upload
+                div.modal-footer
+                    button(type="button", data-dismiss="modal").btn.btn-default Close
 
 block scripts
     <!-- BOOTSTRAP TABLE -->
