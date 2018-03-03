@@ -71,7 +71,7 @@ app.use(session({
     key: process.env.cookieKey || keys.cookieKey,
     resave: false,
     saveUninitialized: false,
-    session: new MSSQLStore(sessionConfig)
+    store: new MSSQLStore(sessionConfig)
 }));
 
 // Passport JS
