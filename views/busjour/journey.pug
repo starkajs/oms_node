@@ -10,44 +10,48 @@ block content
             .col-sm-10.col-sm-offset-1
                 a(href="/journey/journeys").btn.btn-primary All Journeys
         br
-        .row
-            .col-sm-3.col-sm-offset-1
-                div.panel.panel-default
-                    div.panel-body
-                        h4 Projects
-                        a(href="/journey/" + journey.id + "/projects").btn.btn-primary View Projects
-                        table#projectsTable.table.table-striped.table-condensed
-            .col-sm-3
-                div.panel.panel-default
-                    div.panel-body
-                        h4 Capabilities
-                        a(href="/journey/" + journey.id + "/capabilities").btn.btn-primary View Capabilities
-                        table#capabilitiesTable.table.table-striped.table-condensed
-            .col-sm-3
-                div.panel.panel-default
-                    div.panel-body
-                        h4 Solutions
-                        a(href="/journey/" + journey.id + "/solutions").btn.btn-primary View Solutions
-                        table#solutionsTable.table.table-striped.table-condensed
-        .row
-            .col-sm-3.col-sm-offset-1
-                div.panel.panel-default
-                    div.panel-body
-                        h4 Requirements
-                        a(href="/journey/journey_requirements/" + journey.id).btn.btn-primary View Requirements
-                        table#requirementsTable.table.table-striped.table-condensed
-            .col-sm-3
-                div.panel.panel-default
-                    div.panel-body
-                        h4 Scenarios
-                        a(href="/journey/" + journey.id + "/scenarios").btn.btn-primary View Scenarios
-                        table#scenariosTable.table.table-striped.table-condensed
-            .col-sm-3
-                div.panel.panel-default
-                    div.panel-body
-                        h4 Vendors
-                        a(href="/journey/journey_vendors/" + journey.id ).btn.btn-primary View Vendors
-                        table#vendorsTable.table.table-striped.table-condensed
+        div#journeyTabs.col-sm-10.col-sm-offset-1
+            div.panel.panel-default
+                div.panel-body
+                    ul.nav.nav-tabs
+                        li.active
+                            a(href="#tabProjects", data-toggle="tab") Projects
+                        li
+                            a(href="#tabCapabilities", data-toggle="tab") Capabilities
+                        li
+                            a(href="#tabSolutions", data-toggle="tab") Solutions
+                        li
+                            a(href="#tabRequirements", data-toggle="tab") Requirements
+                        li
+                            a(href="#tabScenarios", data-toggle="tab") Scenarios
+                        li
+                            a(href="#tabVendors", data-toggle="tab") Vendors
+                    div.tab-content.clearfix
+                        div.tab-pane.active#tabProjects
+                            br
+                            a(href="/journey/" + journey.id + "/projects").btn.btn-primary View Projects
+                            table#projectsTable.table.table-striped.table-condensed
+                        div.tab-pane#tabCapabilities
+                            br
+                            a(href="/journey/" + journey.id + "/capabilities").btn.btn-primary View Capabilities
+                            table#capabilitiesTable.table.table-striped.table-condensed
+                        div.tab-pane#tabSolutions
+                            br
+                            a(href="/journey/" + journey.id + "/solutions").btn.btn-primary View Solutions
+                            table#solutionsTable.table.table-striped.table-condensed
+                        div.tab-pane#tabRequirements
+                            br
+                            a(href="/journey/journey_requirements/" + journey.id).btn.btn-primary View Requirements
+                            table#requirementsTable.table.table-striped.table-condensed
+                        div.tab-pane#tabScenarios
+                            br
+                            a(href="/journey/" + journey.id + "/scenarios").btn.btn-primary View Scenarios
+                            table#scenariosTable.table.table-striped.table-condensed
+                        div.tab-pane#tabVendors
+                            br
+                            a(href="/journey/journey_vendors/" + journey.id ).btn.btn-primary View Vendors
+                            table#vendorsTable.table.table-striped.table-condensed
+
 
 block scripts
     <!-- BOOTSTRAP TABLE -->
