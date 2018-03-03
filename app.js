@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const MSSQLStore = require('connect-mssql')(session);
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
@@ -56,11 +57,21 @@ app.use(
 
 // sessions allow us to store data on visitors from request to request
 // keeps users logged in and allows to send flash messages
+const sessionConfig = {
+    user: keys.sqlServer['userName'],
+    password: keys.sqlServer['password'],
+    server: keys.sqlServer['server'],
+    database: keys.sqlServer['database'],
+    options: {
+        encrypt: true
+    }
+}
 app.use(session({
     secret: process.env.cookieSecret || keys.cookieSecret,
     key: process.env.cookieKey || keys.cookieKey,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    session: new MSSQLStore(sessionConfig)
 }));
 
 // Passport JS
