@@ -11,6 +11,11 @@ class sqlServer {
 		return tp.sql(sqlQuery)
 		.execute()
 	}
+	tpSP(sqlQuery, callback){
+		tp.setConnectionConfig(keys.sqlServer);
+		return tp.sql(sqlQuery)
+		.callProcedure()
+	}
 }
 
 module.exports = {

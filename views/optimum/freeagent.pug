@@ -1,0 +1,47 @@
+extends ../layout
+
+block content
+    .container-fluid
+        .row.col-sm-10.col-sm-offset-1
+            h1 Freeagent Interface
+        .row.col-sm-10.col-sm-offset-1
+            ul.list-group
+                li.list-group-item
+                    a(href=fa_url).btn.btn-primary Tokens
+                li.list-group-item
+                    a(href="/optimum/freeagent_users").btn.btn-primary Users
+                li.list-group-item
+                    a(href="/optimum/freeagent_contacts").btn.btn-primary Contacts (Clients)
+                li.list-group-item
+                    a(href="/optimum/freeagent_projects").btn.btn-primary Projects and Tasks
+                li.list-group-item
+                    a(href="/optimum/freeagent_expenses").btn.btn-primary Expenses
+                li.list-group-item
+                    a(href="/optimum/freeagent_timeslips").btn.btn-primary Timeslips
+                li.list-group-item
+                    a(href="/optimum/freeagent_invoices").btn.btn-primary Invoices
+                li.list-group-item
+                    a.btn.btn-warning Financial Transactions (CSV Import)
+
+block scripts
+    <!-- BOOTSTRAP TABLE -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+
+    <!-- EXPORT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/export/bootstrap-table-export.min.js"></script>
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+    <!-- FILTER -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+    <!-- EDITABLE -->
+    <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+    <!-- ROLES.js -->
+    script(src="../javascript/optimum/freeagent.js")

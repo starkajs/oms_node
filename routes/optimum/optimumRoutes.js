@@ -10,4 +10,10 @@ router.get('/projects', optimumController.projects);
 router.get('/project/:pid', optimumController.project);
 router.post('/project/:pid', optimumController.editProject);
 
+router.get('/freeagent', optimumController.freeagent);
+router.get('/freeagent_callback', optimumController.freeagentCallback)
+router.get('/freeagent_users', optimumController.freeagentUsers);
+router.get('/freeagent_contacts', optimumController.freeagentContacts);
+router.get('/freeagent_projects', optimumController.freeagentProjects);
+
 module.exports = router;
