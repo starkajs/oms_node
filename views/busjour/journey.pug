@@ -9,6 +9,8 @@ block content
         .row
             .col-sm-10.col-sm-offset-1
                 a(href="/journey/journeys").btn.btn-primary All Journeys
+                span &emsp;
+                a(href="/journey/journeys").btn.btn-primary Selection Report
         br
         div#journeyTabs.col-sm-10.col-sm-offset-1
             div.panel.panel-default
@@ -26,6 +28,8 @@ block content
                             a(href="#tabScenarios", data-toggle="tab") Scenarios
                         li
                             a(href="#tabVendors", data-toggle="tab") Vendors
+                        li
+                            a(href="#tabWeighting", data-toggle="tab") Evaluation Weighting
                     div.tab-content.clearfix
                         div.tab-pane.active#tabProjects
                             br
@@ -51,6 +55,12 @@ block content
                             br
                             a(href="/journey/journey_vendors/" + journey.id ).btn.btn-primary View Vendors
                             table#vendorsTable.table.table-striped.table-condensed
+                        div.tab-pane#tabWeighting
+                            br
+                            button(onclick="populateCategories()").btn.btn-primary Populate Categories
+                            span &emsp;
+                            h4#current_weight
+                            table#evaluationTable.table.table-striped.table-condensed
 
 
 block scripts
@@ -80,3 +90,4 @@ block scripts
     script(src="../../javascript/busjour/journeyRequirements.js")
     script(src="../../javascript/busjour/journeyScenarios.js")
     script(src="../../javascript/busjour/journeyVendors.js")
+    script(src="../../javascript/busjour/journeyEvaluation.js")

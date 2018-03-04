@@ -330,4 +330,43 @@ router.post('/evaluation_question', async (req, res) => {
 
 })
 
+router.get('/journey_evaluation/:jid', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM bj_evaluation_weight
+                    AS a left join bj_evaluation_category as b on a.category_id = b.id
+                    WHERE a.journey_id = ${req.params.jid}
+                    ORDER BY b.category_name`;
+    let data = await s.tpQuery(sqlQuery);
+    res.json(data);
+})
+
+router.post('/evaluation_weight', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `UPDATE bj_evaluation_weight SET ${req.body.update_field} = ${req.body.update_value}
+                    WHERE journey_id = ${req.body.journey_id} AND category_id = '${req.body.category_id}'`
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            res.json({success: 'successfully updated'})
+        })
+        .fail((err) => {
+            res.json({error: err['message']})
+        })
+
+})
+
+router.post('/populate_evaluation/:jid', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `insert into bj_evaluation_weight (journey_id, category_id)
+                    select ${req.params.jid}, id
+                    from bj_evaluation_category
+                    where id not in (select category_id from bj_evaluation_weight where journey_id = ${req.params.jid})`
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            res.json({success: 'successfully updated'})
+        })
+        .fail((err) => {
+            res.json({error: err['message']})
+        })
+})
+
 module.exports = router;
