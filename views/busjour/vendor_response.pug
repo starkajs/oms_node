@@ -1,0 +1,92 @@
+extends ../layout
+
+block content
+    .container-fluid
+        .row.hidden
+            span#journey_id #{journey.id}
+            span#vendor_id #{vendor.id}
+        .row
+            .col-sm-10.col-sm-offset-1
+                h2 #{vendor.vendor_name}
+                    small &emsp;#{journey.journey_name} - #{journey.client_name}
+        .row
+            .col-sm-10.col-sm-offset-1
+                a(href="/journey/journeys").btn.btn-primary Journey
+                span &emsp;
+                button().btn.btn-primary Submit
+        br
+        div#journeyTabs.col-sm-10.col-sm-offset-1
+            div.panel.panel-default
+                div.panel-body
+                    ul.nav.nav-tabs
+                        li.active
+                            a(href="#tabInstructions", data-toggle="tab") Instructions
+                        li
+                            a(href="#tabSummary", data-toggle="tab") Summary
+                        li
+                            a(href="#tabQuestions", data-toggle="tab") Questions
+                        li
+                            a(href="#tabRequirements", data-toggle="tab") Requirements
+                        li
+                            a(href="#tabCosting", data-toggle="tab") Costing
+                    div.tab-content.clearfix
+                        div.tab-pane.active#tabInstructions
+                            br
+                            div.panel.panel-default
+                                div.panel-body
+                                    ul.list-group
+                                        li.list-group-item.list-group-item-info Answer each of the questions on the Questions tab
+                                        li.list-group-item.list-group-item-info Enter a response (and comment where applicable) on each of the requirements
+                                        li.list-group-item.list-group-item-info Complete the costing schedule
+                                        li.list-group-item.list-group-item-info Submit the response (no further changes can be made when this has been done)
+                                        li.list-group-item.list-group-item-info Send relevant documentation to &nbsp;
+                                            a(href="mailto:itt@optimumpps.co.uk") itt@optimumpps.co.uk
+                                        li.list-group-item.list-group-item-info Download a copy of your responses &nbsp;
+                                            a(href="/journey/download_responses") HERE
+                        div.tab-pane#tabSummary
+                            br
+                            div.panel.panel-default
+                                div.panel-body
+                                    ul.list-group
+                                        li.list-group-item.list-group-item-danger You have answered all questions
+                                        li.list-group-item.list-group-item-danger You have answered all requirements
+                                        li.list-group-item.list-group-item-danger You have entered a costing schedule
+                                        if vendor.submitted == 1
+                                            li.list-group-item.list-group-item-success You have submitted the response for review
+                                        else
+                                            li.list-group-item.list-group-item-danger You have not submitted the response for review
+                        div.tab-pane#tabQuestions
+                            br
+                            button(onclick="populateQuestions()").btn.btn-primary Populate Questions
+                            span &emsp;
+                            table#questionsTable.table.table-striped.table-condensed
+                        div.tab-pane#tabRequirements
+                            br
+                            table#requirementsTable.table.table-striped.table-condensed
+                        div.tab-pane#tabCosting
+                            br
+                            table#evaluationTable.table.table-striped.table-condensed
+
+
+block scripts
+    <!-- BOOTSTRAP TABLE -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+
+    <!-- EXPORT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/export/bootstrap-table-export.min.js"></script>
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+    <!-- FILTER -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+    <!-- EDITABLE -->
+    <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+    <!-- PROJECTS.js -->
+    script(src="../../../javascript/busjour/vendorQuestions.js")

@@ -369,4 +369,63 @@ router.post('/populate_evaluation/:jid', async (req, res) => {
         })
 })
 
+router.post('/populate_evaluation_questions', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `insert into bj_evaluation_question_response (journey_id, vendor_id, question_id)
+                    select ${req.body.journey_id}, '${req.body.vendor_id}', id
+                    from bj_evaluation_question
+                    where id not in (select question_id from bj_evaluation_question_response where journey_id = ${req.body.journey_id} AND vendor_id = '${req.body.vendor_id}')`
+    s.tpQuery(sqlQuery)
+    .then(() => {
+        res.json({success: 'successfully updated'})
+    })
+    .fail((err) => {
+        res.json({error: err['message']})
+    })
+})
+
+router.get('/vendor_questions/:jid/:vid', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `select
+                    c.category_name,
+                    b.evaluation_question,
+                    b.question_type,
+                    a.*
+                    from bj_evaluation_question_response as a
+                    left join bj_evaluation_question as b on a.question_id = b.id
+                    left join bj_evaluation_category as c on b.category_id = c.id
+                    WHERE a.journey_id = ${req.params.jid} AND a.vendor_id = '${req.params.vid}'
+                    order by c.category_name`
+    let data = await s.tpQuery(sqlQuery);
+    res.json(data);
+})
+
+router.post('/vendor_question', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = '';
+    console.log(req.body.update_field);
+    switch (req.body.update_field) {
+        case 'response_text':
+            sqlQuery = `UPDATE bj_evaluation_question_response SET ${req.body.update_field} = '${(req.body.update_value).replace("'", "")}'
+            WHERE journey_id = ${req.body.journey_id} AND vendor_id = '${req.body.vendor_id}' AND question_id = ${req.body.question_id}`;
+            break;
+        case 'response_comment':
+            sqlQuery = `UPDATE bj_evaluation_question_response SET ${req.body.update_field} = '${(req.body.update_value).replace("'", "")}'
+            WHERE journey_id = ${req.body.journey_id} AND vendor_id = '${req.body.vendor_id}' AND question_id = ${req.body.question_id}`;
+            break;
+        default:
+            sqlQuery = `UPDATE bj_evaluation_question_response SET ${req.body.update_field} = ${req.body.update_value}
+            WHERE journey_id = ${req.body.journey_id} AND vendor_id = '${req.body.vendor_id}' AND question_id = ${req.body.question_id}`;
+            break;
+    }
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            res.json({success: 'successfully updated'})
+        })
+        .fail((err) => {
+            res.json({error: err['message']})
+        })
+
+})
+
 module.exports = router;

@@ -119,3 +119,16 @@ exports.questions = async (req, res) => {
         title: 'Evaluation Questions', category: category[0]
     })
 }
+
+exports.journeyVendor = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM vw_bj_journey WHERE id = ${req.params.jid}`
+    let journey = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT * FROM bj_vendor AS a left join ss_vendor AS b on a.vendor_id = b.id WHERE a.vendor_id = '${req.params.vid}'`
+    let vendor = await s.tpQuery(sqlQuery);
+    sqlQuery = `SELECT * FROM bj_evaluation_category ORDER BY category_name`
+    let categories = await s.tpQuery(sqlQuery);
+    res.render('busjour/vendor_response', {
+        title: 'Vendor', journey: journey[0], vendor: vendor[0], categories
+    })
+}

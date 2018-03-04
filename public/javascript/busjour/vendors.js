@@ -141,7 +141,7 @@ $(function(){
 })
 
 const vendorNameFormatter = (value, row) => {
-    return `<a href="/journey_vendor/${row.journey_id}/${row.vendor_id}">${value}</a>`
+    return `<a href="/journey/journey_vendor/${row.journey_id}/${row.vendor_id}">${value}</a>`
 }
 
 const contactFormatter = (value, row) => {
