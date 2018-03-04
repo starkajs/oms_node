@@ -13,4 +13,9 @@ router.get('/journey_vendors_score/:jid', journeyController.journeyVendorsScore)
 router.get('/journey_requirements/:jid', journeyController.requirements);
 router.get('/requirements_responses/:jid', journeyController.requirementsResponses);
 
+router.get('/categories', journeyController.evaluationCategories);
+router.get('/category/:cid', journeyController.category);
+router.post('/category/:cid', journeyController.editCategory);
+router.get('/questions/:cid', journeyController.questions);
+
 module.exports = router;

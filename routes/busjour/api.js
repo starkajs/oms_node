@@ -282,4 +282,52 @@ router.post('/upload_responses/:jid', async (req, res) => {
     form.parse(req);
 });
 
+router.get('/categories', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `select a.*,
+                    (select count(1) from bj_evaluation_question as aa where aa.category_id = a.id) as question_count
+                    from bj_evaluation_category as a ORDER BY a.category_name`;
+    let categories = await s.tpQuery(sqlQuery);
+    res.json(categories);
+})
+
+router.get('/questions/:cid', async (req, res) => {;
+    const s = new sql.sqlServer();
+    let sqlQuery = `select *
+                    from bj_evaluation_question as a
+                    WHERE a.category_id = '${req.params.cid}'`
+    let questions = await s.tpQuery(sqlQuery);
+    res.json(questions);
+})
+
+router.post('/add_question/:cid', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `INSERT INTO bj_evaluation_question (category_id, evaluation_question, question_type)
+                    OUTPUT INSERTED.id
+                    VALUES ('${req.params.cid}', '${(req.body.evaluation_question).replace("'", "")}' ,'${req.body.question_type}')`
+    s.tpQuery(sqlQuery)
+        .then((response) => {
+            req.flash('success', `Question inserted with id ${response[0]['id']}`);
+            res.redirect(`/journey/questions/${req.params.cid}`);
+        })
+        .fail((err) => {
+            req.flash('danger', err['message']);
+            res.redirect(`/journey/questions/${req.params.cid}`);
+        })
+})
+
+router.post('/evaluation_question', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `UPDATE bj_evaluation_question SET ${req.body.update_field} = '${(req.body.update_value).replace("'", "")}'
+                    WHERE id = ${req.body.question_id}`
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            res.json({success: 'successfully updated'})
+        })
+        .fail((err) => {
+            res.json({error: err['message']})
+        })
+
+})
+
 module.exports = router;

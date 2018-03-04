@@ -79,3 +79,43 @@ exports.requirementsResponses = async (req, res) => {
         title: 'Journey Requirements', journey: journey[0], vendors
     })
 }
+
+exports.evaluationCategories = async (req, res) => {
+    res.render('busjour/categories', {
+        title: 'Evaluation Categories'
+    })
+}
+
+exports.category = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM bj_evaluation_category WHERE id = '${req.params.cid}'`
+    let category = await s.tpQuery(sqlQuery);
+    res.render('busjour/category', {
+        title: 'Evaluation Category', category: category[0]
+    })
+}
+
+exports.editCategory = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `UPDATE bj_evaluation_category SET category_name = '${req.body.category_name}',
+                    category_description = '${(req.body.category_description).replace("'", "")}' WHERE id = '${req.params.cid}'`
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            req.flash('success', 'Category updated');
+            res.redirect(`/journey/category/${req.params.cid}`)
+        })
+        .fail((err) => {
+            req.flash('danger', err['message']);
+            res.redirect(`/journey/category/${req.params.cid}`)
+        })
+
+}
+
+exports.questions = async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM bj_evaluation_category WHERE id = '${req.params.cid}'`
+    let category = await s.tpQuery(sqlQuery);
+    res.render('busjour/questions', {
+        title: 'Evaluation Questions', category: category[0]
+    })
+}

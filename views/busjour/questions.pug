@@ -1,0 +1,60 @@
+extends ../layout
+
+block content
+    .container-fluid
+        .row.col-sm-10.col-sm-offset-1
+            h1 Evaluation Questions for #{category.category_name}
+        .row.col-sm-10.col-sm-offset-1
+            a(href="/journey/categories").btn.btn-primary All Categories
+            span &emsp;
+            button(data-toggle="modal", data-target="#addQuestion").btn.btn-primary Add Question
+        .row.col-sm-10.col-sm-offset-1
+            table#table.table.table-striped.table-condensed
+    div(role="dialog")#addQuestion.modal.fade
+        div.modal-dialog
+            div.modal-content
+                div.modal-header
+                    button(type="button", data-dismiss="modal").close &times;
+                    h4.modal-title Add Question
+                div.modal-body
+                    form(action="/api/journey/add_question/" + category.id, method="post").form-horizontal
+                        div.form-group
+                            label(for="evaluation_question").control-label.col-sm-3 Question
+                            div.col-sm-9
+                                textarea(name="evaluation_question", rows="5", autofocus="true", required="true").form-control
+                        div.form-group
+                            label(for="question_type").control-label.col-sm-3 Response Type
+                            div.col-sm-9
+                                select(name="question_type", data-width="100%", title="Select a question type", required="true").selectpicker
+                                    option(value="integer") Integer (whole number)
+                                    option(value="boolean") Boolean (Y/N)
+                                    option(value="percent") Percent
+                                    option(value="text") Text
+                        div.form-group
+                            div.col-sm-9.col-sm-offset-3
+                                button(type="submit").btn.btn-primary Save
+                div.modal-footer
+                    button(type="button", data-dismiss="modal").btn.btn-default Close
+
+block scripts
+    <!-- BOOTSTRAP TABLE -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+
+    <!-- EXPORT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/export/bootstrap-table-export.min.js"></script>
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+
+    <!-- FILTER -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+    <!-- EDITABLE -->
+    <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+    <!-- ROLES.js -->
+    script(src="../../javascript/busjour/questions.js")
