@@ -67,3 +67,9 @@ exports.editProject = async (req, res) => {
             res.redirect(`/optimum/project/${req.params.pid}`);
         })
 }
+
+exports.prime = async (req, res) => {
+    res.render('optimum/prime', {
+        title: 'PRIME Phases'
+    })
+}

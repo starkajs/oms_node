@@ -93,4 +93,23 @@ router.post('/add_project_task/:pid', async (req, res) => {
         })
 })
 
+router.get('/prime', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `SELECT * FROM prime_phase ORDER BY phase_name, stage_name`
+    let data = await s.tpQuery(sqlQuery);
+    res.json(data);
+})
+
+router.post('/prime', async (req, res) => {
+    const s = new sql.sqlServer();
+    let sqlQuery = `UPDATE prime_phase SET ${req.body.update_field} = '${req.body.update_value}' WHERE id = '${req.body.stage_id}'`
+    s.tpQuery(sqlQuery)
+        .then(() => {
+            res.json({message: 'Updated phase'})
+        })
+        .fail((err) => {
+            req.json({message: err['message']});
+        })
+})
+
 module.exports = router;

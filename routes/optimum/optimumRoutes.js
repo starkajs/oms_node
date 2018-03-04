@@ -11,12 +11,6 @@ router.get('/projects', optimumController.projects);
 router.get('/project/:pid', optimumController.project);
 router.post('/project/:pid', optimumController.editProject);
 
-router.get('/freeagent', freeagentController.freeagent);
-router.get('/freeagent_callback', freeagentController.freeagentCallback)
-router.get('/freeagent_users', freeagentController.freeagentUsers);
-router.get('/freeagent_contacts', freeagentController.freeagentContacts);
-router.get('/freeagent_projects', freeagentController.freeagentProjects);
-router.get('/freeagent_tasks', freeagentController.freeagentTasks);
-router.get('/freeagent_expenses', freeagentController.freeagentExpenses);
+router.get('/prime', optimumController.prime);
 
 module.exports = router;
